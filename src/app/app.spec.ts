@@ -25,4 +25,35 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('PaperLens');
   });
+
+  it('should open language dropdown and change language when an option is clicked', async () => {
+    const fixture = TestBed.createComponent(App);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    // Open language menu
+    const langBtn = fixture.nativeElement.querySelector('.btn-lang-header') as HTMLButtonElement;
+    langBtn.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.langMenuOpen()).toBe(true);
+
+    // Find French or Spanish option
+    const options = fixture.nativeElement.querySelectorAll('.lang-option-btn') as NodeListOf<HTMLButtonElement>;
+    expect(options.length).toBeGreaterThan(1);
+
+    const esOption = Array.from(options).find((btn) => btn.textContent?.includes('Español'));
+    expect(esOption).toBeTruthy();
+    esOption?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.lang.currentLang()).toBe('es');
+    expect(component.langMenuOpen()).toBe(false);
+
+    // Verify brand tag translated
+    const brandTag = fixture.nativeElement.querySelector('.brand-tag') as HTMLElement;
+    expect(brandTag.textContent).toContain('Investigación abierta');
+  });
 });
