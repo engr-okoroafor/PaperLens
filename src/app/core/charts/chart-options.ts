@@ -50,7 +50,7 @@ export function barChart(buckets: AggregateBucket[], motion: boolean): EChartsCo
   return {
     ...base(motion),
     tooltip: richTooltip(sum(buckets), false),
-    grid: { left: 8, right: 16, top: 8, bottom: 8, containLabel: true },
+    grid: { left: 124, right: 16, top: 8, bottom: 8 },
     xAxis: axis([], 'value'),
     yAxis: {
       ...axis(rows.map((bucket) => bucket.label), 'category'),
