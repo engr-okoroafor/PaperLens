@@ -7,6 +7,7 @@ import { Facet } from '../../core/models/paper';
 import { facetLabel } from '../../core/query/compose-query';
 import { SearchStore } from '../../core/services/search-store.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { LanguageService } from '../../core/services/language.service';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
@@ -18,6 +19,7 @@ import { TooltipDirective } from '../tooltip/tooltip.directive';
 export class ChartsPanel {
   readonly store = inject(SearchStore);
   readonly theme = inject(ThemeService);
+  readonly lang = inject(LanguageService);
   readonly donut = signal<'type' | 'language'>('type');
   private readonly motion = !prefersReducedMotion();
 

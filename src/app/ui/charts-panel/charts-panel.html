@@ -1,6 +1,6 @@
 <aside class="glass panel" data-tour="charts" aria-label="Corpus charts">
-  <p class="kicker">Corpus</p>
-  <h2 class="chart-title">The shape of the results</h2>
+  <p class="kicker">{{ lang.t('corpus') }}</p>
+  <h2 class="chart-title">{{ lang.t('corpus_title') }}</h2>
 
   @if (!store.searched()) {
     <p class="muted">Charts stay blank until a query is running. A year, a publisher, or a topic can then narrow the list.</p>
@@ -20,7 +20,7 @@
     }
 
     <section class="chart-block">
-      <h3>Publications per year</h3>
+      <h3>{{ lang.t('pub_per_year') }}</h3>
       @if (store.aggregates()?.years?.length) {
         <div
           echarts
@@ -35,7 +35,7 @@
     </section>
 
     <section class="chart-block">
-      <h3>Top publishers</h3>
+      <h3>{{ lang.t('top_publishers') }}</h3>
       @if (store.aggregates()?.publishers?.length) {
         <div
           echarts
@@ -51,13 +51,13 @@
 
     <section class="chart-block">
       <div class="chart-heading">
-        <h3>{{ donut() === 'type' ? 'Document type' : 'Language' }}</h3>
+        <h3>{{ donut() === 'type' ? lang.t('doc_type') : lang.t('language') }}</h3>
         <div class="segment" role="group" aria-label="Donut measure">
           <button type="button" class="btn" [attr.aria-pressed]="donut() === 'type'" (click)="donut.set('type')" appTooltip="Show document types.">
-            Type
+            {{ lang.t('doc_type') }}
           </button>
           <button type="button" class="btn" [attr.aria-pressed]="donut() === 'language'" (click)="donut.set('language')" appTooltip="Show languages.">
-            Language
+            {{ lang.t('language') }}
           </button>
         </div>
       </div>
@@ -75,7 +75,7 @@
     </section>
 
     <section class="chart-block">
-      <h3>Topics</h3>
+      <h3>{{ lang.t('topics') }}</h3>
       @if (store.aggregates()?.topics?.length) {
         <div
           echarts

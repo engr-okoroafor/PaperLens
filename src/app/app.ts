@@ -68,6 +68,9 @@ export class App {
       this.updateDropdownPosition();
     }
     this.langMenuOpen.set(willOpen);
+    if (willOpen) {
+      setTimeout(() => this.updateDropdownPosition(), 0);
+    }
   }
 
   private updateDropdownPosition(): void {
@@ -75,8 +78,8 @@ export class App {
     if (trigger) {
       const rect = trigger.getBoundingClientRect();
       this.langMenuPosition.set({
-        top: rect.bottom + 8,
-        right: Math.max(12, window.innerWidth - rect.right),
+        top: Math.round(rect.bottom + 8),
+        right: Math.round(Math.max(12, window.innerWidth - rect.right)),
       });
     }
   }
