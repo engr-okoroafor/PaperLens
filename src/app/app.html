@@ -92,6 +92,7 @@
 
 <!-- Fixed Portal-style Language Dropdown -->
 @if (langMenuOpen()) {
+  <div class="lang-dropdown-backdrop" (click)="langMenuOpen.set(false)"></div>
   <div
     class="lang-dropdown header-lang-dropdown glass"
     [style.top.px]="langMenuPosition().top"

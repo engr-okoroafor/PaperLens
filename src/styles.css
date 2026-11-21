@@ -1333,6 +1333,14 @@ html.light-mode .lang-short-code {
   color: #0d9488;
 }
 
+.lang-dropdown-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999998;
+  background: transparent;
+  cursor: default;
+}
+
 .header-lang-dropdown {
   position: fixed;
   min-width: 220px;
