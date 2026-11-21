@@ -1,0 +1,36 @@
+<article class="glass panel" aria-live="polite">
+  <p class="kicker">Results</p>
+  @if (store.source() === 'core') {
+    <span class="pill pill-live">Live CORE</span>
+  } @else if (store.source() === 'sample') {
+    <span class="pill pill-sample">Sample data</span>
+  }
+
+  @if (store.loading()) {
+    <div class="stack">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
+  } @else if (!store.searched()) {
+    <div class="empty">
+      <h3>The index is quiet.</h3>
+      <p class="muted">
+        Enter a query to load papers. Each card will show the title, authors, year, venue, abstract,
+        DOI, and whether full text or a citation count is available.
+      </p>
+    </div>
+  } @else if (store.papers().length === 0) {
+    <div class="empty">
+      <h3>No papers for this query.</h3>
+      <p class="muted">Try a broader term, or drop a field filter such as title:.</p>
+    </div>
+  } @else {
+    <p class="muted">{{ store.totalHits() }} matches · showing {{ store.papers().length }} on this page.</p>
+    <div class="paper-list">
+      @for (paper of store.papers(); track paper.id) {
+        <app-paper-card [paper]="paper" [sample]="store.source() === 'sample'" />
+      }
+    </div>
+  }
+</article>

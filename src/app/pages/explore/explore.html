@@ -71,58 +71,7 @@
 }
 
 <section class="grid-main" aria-label="Results and charts">
-  <article class="glass panel">
-    <div class="stack">
-      <div>
-        <p class="kicker">Results</p>
-        @if (store.source() === 'core') {
-          <span class="pill pill-live">Live CORE</span>
-        } @else if (store.source() === 'sample') {
-          <span class="pill pill-sample">Sample data</span>
-        }
-      </div>
-
-      @if (store.loading()) {
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-      } @else if (!store.searched()) {
-        <div class="empty">
-          <h3>The index is quiet.</h3>
-          <p class="muted">
-            Enter a query to load papers. Charts stay blank until the first search. Try
-            <span class="pill">drone AND delivery</span>
-          </p>
-        </div>
-      } @else if (store.papers().length === 0) {
-        <div class="empty">
-          <h3>No papers for this query.</h3>
-          <p class="muted">Try a broader term, or check the spelling of a field filter such as title:.</p>
-        </div>
-      } @else {
-        <p class="muted">{{ store.totalHits() }} matches · showing {{ store.papers().length }} on this page.</p>
-        <div class="paper-list">
-          @for (paper of store.papers(); track paper.id) {
-            <article class="glass panel paper-row">
-              @if (store.source() === 'sample') {
-                <span class="pill pill-sample">Sample data</span>
-              }
-              <h3>{{ paper.title }}</h3>
-              <p class="muted">
-                {{ paper.authors.join(', ') || 'Unknown authors' }}
-                @if (paper.year) {
-                  · {{ paper.year }}
-                }
-                @if (paper.publisher) {
-                  · {{ paper.publisher }}
-                }
-              </p>
-            </article>
-          }
-        </div>
-      }
-    </div>
-  </article>
+  <app-results-list />
 
   <aside class="glass panel" aria-label="Charts">
     <p class="kicker">Corpus</p>
