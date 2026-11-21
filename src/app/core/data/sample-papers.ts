@@ -1,4 +1,5 @@
 import { Paper } from '../models/paper';
+import { matchesPaper, parseQuery } from '../query/boolean-query';
 
 /** Original sample records so the UI still demos when CORE is down. */
 export const SAMPLE_PAPERS: readonly Paper[] = [
@@ -242,40 +243,10 @@ export const SAMPLE_PAPERS: readonly Paper[] = [
   },
 ];
 
-const SKIPPED = new Set([
-  'and',
-  'or',
-  'not',
-  'title',
-  'authors',
-  'author',
-  'abstract',
-  'publisher',
-  'language',
-  'documenttype',
-  'doi',
-  'yearpublished',
-  '_exists_',
-]);
-
-/** Best-effort match used before the boolean parser is applied. */
-export function looseMatch(paper: Paper, query: string): boolean {
-  const terms = query
-    .toLowerCase()
-    .replace(/[()"<>:=]/g, ' ')
-    .split(/\s+/)
-    .filter((term) => term.length > 1 && !SKIPPED.has(term) && !/^\d+$/.test(term));
-  if (terms.length === 0) {
-    return true;
-  }
-  const haystack = [paper.title, paper.abstract, paper.authors.join(' '), paper.publisher, paper.journal]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
-  const hasOr = /\bor\b/i.test(query) && !/\band\b/i.test(query);
-  return hasOr ? terms.some((term) => haystack.includes(term)) : terms.every((term) => haystack.includes(term));
-}
-
 export function filterSample(query: string): Paper[] {
-  return SAMPLE_PAPERS.filter((paper) => looseMatch(paper, query));
+  const parsed = parseQuery(query);
+  if (!parsed.valid || !parsed.ast) {
+    return parsed.valid ? [...SAMPLE_PAPERS] : [];
+  }
+  return SAMPLE_PAPERS.filter((paper) => matchesPaper(paper, parsed.ast!));
 }

@@ -6,22 +6,7 @@
     a built-in sample set takes over if CORE is unavailable.
   </p>
 
-  <form class="search-shell" [class.idle]="!store.draft().trim()" role="search" (submit)="submit($event)">
-    <label class="sr-only" for="query">Boolean search</label>
-    <input
-      id="query"
-      name="query"
-      type="search"
-      autocomplete="off"
-      [value]="store.draft()"
-      (input)="onDraft($event)"
-      placeholder="(drone AND (package OR delivery))"
-      appTooltip="Boolean query sent to CORE. Operators, quotes, and parentheses are supported."
-    />
-    <button class="btn btn-primary" type="submit" appTooltip="Search CORE now. Empty queries clear the page.">
-      Search
-    </button>
-  </form>
+  <app-search-panel />
 
   <app-count-control />
 </section>

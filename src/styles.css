@@ -240,6 +240,105 @@ select.field {
   outline: none;
 }
 
+.query-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.query-backdrop,
+.query-input {
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: pre;
+  padding: 0.85rem 1rem;
+}
+
+.query-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--text);
+}
+
+.query-input {
+  position: relative;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--lime);
+}
+
+.query-input::placeholder {
+  color: rgba(183, 196, 178, 0.75);
+}
+
+.tok-op {
+  color: #d9f99d;
+  font-weight: 650;
+}
+
+.tok-field,
+.tok-paren {
+  color: #86efac;
+}
+
+.tok-phrase {
+  color: #fde68a;
+}
+
+.tok-error {
+  text-decoration: underline wavy #f0b4a8;
+}
+
+.query-help {
+  min-height: 1.2rem;
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+}
+
+.query-error {
+  color: var(--danger);
+}
+
+.examples,
+.builder,
+.link-row,
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.examples,
+.builder,
+.refine {
+  margin-top: 0.75rem;
+}
+
+.builder .field,
+.refine-input {
+  width: auto;
+  min-width: 9rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.28);
+  padding: 0.55rem 0.8rem;
+}
+
+.builder-keyword {
+  min-width: min(100%, 14rem);
+  flex: 1;
+}
+
+.refine-input {
+  width: min(100%, 28rem);
+  margin-top: 0.35rem;
+}
+
 .btn,
 .icon-btn {
   border: 1px solid var(--line);

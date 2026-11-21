@@ -20,7 +20,7 @@ export class ResultsList {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || this.store.loading()) {
         return;
       }
-      const key = this.store.papers().map((paper) => paper.id).join('|');
+      const key = this.store.visiblePapers().map((paper) => paper.id).join('|');
       if (!key || key === this.animatedKey) {
         return;
       }

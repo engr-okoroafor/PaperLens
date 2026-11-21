@@ -25,10 +25,20 @@
       <h3>No papers for this query.</h3>
       <p class="muted">Try a broader term, or drop a field filter such as title:.</p>
     </div>
+  } @else if (store.visiblePapers().length === 0) {
+    <div class="empty">
+      <h3>The page filter removed every loaded paper.</h3>
+      <p class="muted">Clear “Filter loaded results”, or loosen the boolean expression.</p>
+    </div>
   } @else {
-    <p class="muted">{{ store.rangeLabel() }}</p>
+    <p class="muted">
+      {{ store.rangeLabel() }}
+      @if (store.visiblePapers().length !== store.papers().length) {
+        · page filter keeps {{ store.visiblePapers().length }}
+      }
+    </p>
     <div class="paper-list">
-      @for (paper of store.papers(); track paper.id) {
+      @for (paper of store.visiblePapers(); track paper.id) {
         <app-paper-card [paper]="paper" [sample]="store.source() === 'sample'" />
       }
     </div>

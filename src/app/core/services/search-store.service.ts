@@ -2,6 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 
 import { aggregatePapers } from '../api/normalize';
 import { filterSample } from '../data/sample-papers';
+import { insertClause, matchesPaper, parseQuery } from '../query/boolean-query';
 import {
   AggregateSource,
   Aggregates,
@@ -19,6 +20,7 @@ export class SearchStore {
 
   readonly draft = signal('');
   readonly query = signal('');
+  readonly refine = signal('');
   readonly limit = signal(20);
   readonly page = signal(1);
   readonly papers = signal<Paper[]>([]);
@@ -33,6 +35,17 @@ export class SearchStore {
 
   readonly offset = computed(() => (this.page() - 1) * this.limit());
   readonly pageCount = computed(() => Math.max(1, Math.ceil(this.totalHits() / this.limit())));
+  readonly validation = computed(() => parseQuery(this.draft()));
+  readonly refineValidation = computed(() => parseQuery(this.refine()));
+  readonly visiblePapers = computed(() => {
+    const parsed = this.refineValidation();
+    const papers = this.papers();
+    const ast = parsed.ast;
+    if (!this.refine().trim() || !parsed.valid || !ast) {
+      return papers;
+    }
+    return papers.filter((paper) => matchesPaper(paper, ast));
+  });
   readonly rangeLabel = computed(() => {
     if (!this.papers().length) {
       return '';
@@ -58,6 +71,19 @@ export class SearchStore {
       this.timer.id = null;
     }
     this.commit(this.draft());
+  }
+
+  replaceQuery(value: string): void {
+    this.draft.set(value);
+    this.commitNow();
+  }
+
+  setRefine(value: string): void {
+    this.refine.set(value);
+  }
+
+  insert(clause: string): void {
+    this.replaceQuery(insertClause(this.draft(), clause));
   }
 
   setLimit(value: number): void {
@@ -104,6 +130,9 @@ export class SearchStore {
 
   private commit(value: string): void {
     const trimmed = value.trim();
+    if (!parseQuery(trimmed).valid) {
+      return;
+    }
     if (trimmed === this.query()) {
       return;
     }
