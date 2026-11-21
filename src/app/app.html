@@ -77,6 +77,26 @@
           <span class="flag-icon">{{ lang.activeOption().flag }}</span>
           <span class="lang-short-code">{{ lang.currentLang().toUpperCase() }}</span>
         </button>
+
+        @if (langMenuOpen()) {
+          <div
+            class="header-lang-dropdown glass"
+            role="menu"
+            (click)="$event.stopPropagation()"
+          >
+            @for (opt of lang.languages; track opt.code) {
+              <button
+                type="button"
+                class="lang-option-btn"
+                [class.active]="opt.code === lang.currentLang()"
+                (click)="changeLanguage(opt.code, $event)"
+              >
+                <span class="flag">{{ opt.flag }}</span>
+                <span class="name">{{ opt.name }}</span>
+              </button>
+            }
+          </div>
+        }
       </div>
     </div>
   </header>
@@ -90,26 +110,8 @@
   </footer>
 </div>
 
-<!-- Fixed Portal-style Language Dropdown -->
 @if (langMenuOpen()) {
   <div class="lang-dropdown-backdrop" (click)="langMenuOpen.set(false)"></div>
-  <div
-    class="lang-dropdown header-lang-dropdown glass"
-    [style.top.px]="langMenuPosition().top"
-    [style.right.px]="langMenuPosition().right"
-  >
-    @for (opt of lang.languages; track opt.code) {
-      <button
-        type="button"
-        class="lang-option-btn"
-        [class.active]="opt.code === lang.currentLang()"
-        (click)="changeLanguage(opt.code)"
-      >
-        <span class="flag">{{ opt.flag }}</span>
-        <span class="name">{{ opt.name }}</span>
-      </button>
-    }
-  </div>
 }
 
 <!-- Floating Navigation for Top & Bottom -->

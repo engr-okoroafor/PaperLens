@@ -1314,7 +1314,7 @@ html.light-mode .backdrop {
 .header-lang-container {
   position: relative;
   overflow: visible;
-  z-index: 1001;
+  z-index: 10001;
 }
 
 .btn-lang-header {
@@ -1325,6 +1325,7 @@ html.light-mode .backdrop {
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .lang-short-code {
@@ -1340,25 +1341,28 @@ html.light-mode .lang-short-code {
 .lang-dropdown-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 999998;
+  z-index: 10000;
   background: transparent;
   cursor: default;
 }
 
 .header-lang-dropdown {
-  position: fixed;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
   min-width: 220px;
   max-width: min(92vw, 280px);
   max-height: 70vh;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  z-index: 9999999;
+  z-index: 10002;
   padding: 8px;
   border-radius: 14px;
   border: 1px solid var(--line-strong);
   background: #09140e;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(163, 230, 53, 0.25);
+  pointer-events: auto;
 }
 
 html.light-mode .header-lang-dropdown {
@@ -1688,16 +1692,14 @@ kbd {
   }
 
   .header-lang-container {
-    position: static;
+    position: relative;
   }
 
   .header-lang-dropdown {
-    left: 1rem;
-    right: 1rem;
-    top: auto;
-    bottom: auto;
-    width: calc(100vw - 2rem);
-    max-width: none;
+    right: 0;
+    left: auto;
+    width: min(280px, calc(100vw - 2rem));
+    max-width: calc(100vw - 2rem);
     max-height: 55vh;
   }
 

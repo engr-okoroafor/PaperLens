@@ -25,7 +25,6 @@ export class App {
   readonly modal = inject(ModalService);
   readonly showScrollControls = signal(false);
   readonly langMenuOpen = signal(false);
-  readonly langMenuPosition = signal<{ top: number; right: number }>({ top: 0, right: 0 });
   private readonly host = inject(ElementRef<HTMLElement>);
 
   constructor() {
@@ -41,20 +40,11 @@ export class App {
         if (scrolled !== this.showScrollControls()) {
           this.showScrollControls.set(scrolled);
         }
-        if (this.langMenuOpen()) {
-          this.updateDropdownPosition();
-        }
-      }, { passive: true });
-
-      window.addEventListener('resize', () => {
-        if (this.langMenuOpen()) {
-          this.updateDropdownPosition();
-        }
       }, { passive: true });
 
       window.addEventListener('click', (event: MouseEvent) => {
         const target = event.target as HTMLElement | null;
-        if (this.langMenuOpen() && target && !target.closest('.header-lang-container') && !target.closest('.header-lang-dropdown')) {
+        if (this.langMenuOpen() && target && !target.closest('.header-lang-container')) {
           this.langMenuOpen.set(false);
         }
       });
@@ -63,25 +53,7 @@ export class App {
 
   toggleLangMenu(event: MouseEvent): void {
     event.stopPropagation();
-    const willOpen = !this.langMenuOpen();
-    if (willOpen) {
-      this.updateDropdownPosition();
-    }
-    this.langMenuOpen.set(willOpen);
-    if (willOpen) {
-      setTimeout(() => this.updateDropdownPosition(), 0);
-    }
-  }
-
-  private updateDropdownPosition(): void {
-    const trigger = this.host.nativeElement.querySelector('.btn-lang-header') as HTMLElement | null;
-    if (trigger) {
-      const rect = trigger.getBoundingClientRect();
-      this.langMenuPosition.set({
-        top: Math.round(rect.bottom + 8),
-        right: Math.round(Math.max(12, window.innerWidth - rect.right)),
-      });
-    }
+    this.langMenuOpen.set(!this.langMenuOpen());
   }
 
   scrollToTop(): void {
@@ -96,7 +68,10 @@ export class App {
     this.theme.toggle();
   }
 
-  changeLanguage(code: LanguageCode): void {
+  changeLanguage(code: LanguageCode, event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
     this.lang.setLanguage(code);
     this.langMenuOpen.set(false);
   }
