@@ -23,6 +23,9 @@ export class HelpDialog {
     }
     if (event.key === 'Escape') {
       this.tour.helpOpen.set(false);
+      if (this.tour.open()) {
+        this.tour.finish();
+      }
     }
   }
 }
