@@ -11,56 +11,62 @@
         </button>
       </div>
 
-      <p class="kicker">{{ paper.year || 'Year unknown' }} · {{ paper.language || 'Language unknown' }}</p>
-      <h2 id="drawer-title">
-        <app-highlight [text]="paper.title" [terms]="store.terms()" />
-      </h2>
-      <p class="authors-line">{{ paper.authors.join(', ') || 'Unknown authors' }}</p>
-      <p class="muted">{{ paper.journal || 'No journal' }} · {{ paper.publisher || 'No publisher' }}</p>
-      <div class="meta-row">
-        <span class="pill">{{ paper.documentType || 'Type unknown' }}</span>
-        <span class="pill" [class.pill-live]="paper.hasFullText">{{ paper.hasFullText ? lang.t('full_text') : lang.t('no_full_text') }}</span>
-        <span class="pill">
-          @if (paper.citationCount !== null) {
-            {{ paper.citationCount }} {{ lang.t('citations') }}
-          } @else {
-            {{ lang.t('no_citations') }}
+      <div class="drawer-body">
+        <p class="kicker">{{ paper.year || 'Year unknown' }} · {{ paper.language || 'Language unknown' }}</p>
+        <h2 id="drawer-title">
+          <app-highlight [text]="paper.title" [terms]="store.terms()" />
+        </h2>
+        <p class="authors-line">{{ paper.authors.join(', ') || 'Unknown authors' }}</p>
+        <p class="muted">{{ paper.journal || 'No journal' }} · {{ paper.publisher || 'No publisher' }}</p>
+        <div class="meta-row">
+          <span class="pill">{{ paper.documentType || 'Type unknown' }}</span>
+          <span class="pill" [class.pill-live]="paper.hasFullText">{{ paper.hasFullText ? lang.t('full_text') : lang.t('no_full_text') }}</span>
+          <span class="pill">
+            @if (paper.citationCount !== null) {
+              {{ paper.citationCount }} {{ lang.t('citations') }}
+            } @else {
+              {{ lang.t('no_citations') }}
+            }
+          </span>
+          @if (paper.fieldOfStudy) {
+            <span class="pill">{{ paper.fieldOfStudy }}</span>
           }
-        </span>
-        @if (paper.fieldOfStudy) {
-          <span class="pill">{{ paper.fieldOfStudy }}</span>
-        }
-      </div>
-      <div class="abstract-box">
-        <h3>Abstract</h3>
-        <p class="abstract-text">
-          @if (paper.abstract) {
-            <app-highlight [text]="paper.abstract" [terms]="store.terms()" />
-          } @else {
-            No abstract was supplied for this work.
-          }
-        </p>
-      </div>
-      <div class="link-row" style="margin-top: 1.2rem">
-        @if (paper.doi) {
-          <button type="button" class="chip" (click)="openExternal('https://doi.org/' + paper.doi, 'DOI Landing')">
-            DOI: {{ paper.doi }} &nearr;
-          </button>
-        }
-        @if (paper.downloadUrl) {
-          <button type="button" class="btn btn-primary" (click)="openExternal(paper.downloadUrl, 'Full-Text Direct PDF')">
-            {{ lang.t('download') }} Direct PDF &nearr;
-          </button>
-        }
+        </div>
+        <div class="abstract-box">
+          <h3>Abstract</h3>
+          <p class="abstract-text">
+            @if (paper.abstract) {
+              <app-highlight [text]="paper.abstract" [terms]="store.terms()" />
+            } @else {
+              No abstract was supplied for this work.
+            }
+          </p>
+        </div>
       </div>
 
-      <div class="export-single-actions export-actions-bottom">
-        <button type="button" class="btn btn-export" (click)="downloadPdf()" appTooltip="Download this paper's verified dossier in formatted PDF.">
-          📄 {{ lang.t('export_single_pdf') }}
-        </button>
-        <button type="button" class="btn btn-export" (click)="downloadDoc()" appTooltip="Download this paper as a Microsoft Word (.doc) report.">
-          📝 {{ lang.t('export_single_doc') }}
-        </button>
+      <!-- Floating Bottom Actions Bar -->
+      <div class="drawer-floating-footer glass">
+        <div class="link-row drawer-compact-row">
+          @if (paper.doi) {
+            <button type="button" class="chip chip-compact" (click)="openExternal('https://doi.org/' + paper.doi, 'DOI Landing')">
+              DOI: {{ paper.doi }} &nearr;
+            </button>
+          }
+          @if (paper.downloadUrl) {
+            <button type="button" class="btn btn-primary btn-compact" (click)="openExternal(paper.downloadUrl, 'Full-Text Direct PDF')">
+              {{ lang.t('download') }} Direct PDF &nearr;
+            </button>
+          }
+        </div>
+
+        <div class="export-single-actions drawer-export-compact">
+          <button type="button" class="btn btn-export btn-compact" (click)="downloadPdf()" appTooltip="Download this paper's verified dossier in formatted PDF.">
+            📄 {{ lang.t('export_single_pdf') }}
+          </button>
+          <button type="button" class="btn btn-export btn-compact" (click)="downloadDoc()" appTooltip="Download this paper as a Microsoft Word (.doc) report.">
+            📝 {{ lang.t('export_single_doc') }}
+          </button>
+        </div>
       </div>
     </aside>
   </div>
