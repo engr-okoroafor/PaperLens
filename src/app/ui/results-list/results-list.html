@@ -1,7 +1,7 @@
 <article class="glass panel" aria-live="polite">
   <p class="kicker">Results</p>
   @if (store.source() === 'core') {
-    <span class="pill pill-live">Live CORE</span>
+    <span class="pill pill-live">Live Research Index</span>
   } @else if (store.source() === 'sample') {
     <span class="pill pill-sample">Sample data</span>
   }
@@ -42,36 +42,51 @@
         <app-paper-card [paper]="paper" [sample]="store.source() === 'sample'" />
       }
     </div>
-    <div class="pager">
+    <div class="pager futuristic-pager">
       @if (store.paging() === 'pages') {
         <button
           type="button"
-          class="btn"
+          class="pager-nav-btn prev-btn"
           (click)="store.setPage(store.page() - 1)"
           [disabled]="store.page() <= 1 || store.loading()"
           appTooltip="Go to the previous page of this query."
         >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
           Previous
         </button>
-        <span>Page {{ store.page() }} of {{ store.pageCount() }}</span>
+
+        <div class="pager-quantum-indicator">
+          <span class="pager-pulse-dot"></span>
+          <span class="pager-label">PAGE</span>
+          <span class="pager-current">{{ store.page() }}</span>
+          <span class="pager-divider">/</span>
+          <span class="pager-total">{{ store.pageCount() }}</span>
+        </div>
+
         <button
           type="button"
-          class="btn"
+          class="pager-nav-btn next-btn"
           (click)="store.setPage(store.page() + 1)"
           [disabled]="store.page() >= store.pageCount() || store.loading()"
           appTooltip="Go to the next page of this query."
         >
           Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
         </button>
       } @else {
         <button
           type="button"
-          class="btn btn-primary"
+          class="btn btn-primary futuristic-loadmore"
           (click)="store.loadMore()"
           [disabled]="store.page() >= store.pageCount() || store.loading()"
           appTooltip="Append the next page without clearing the papers already on screen."
         >
-          {{ store.page() >= store.pageCount() ? 'All loaded pages shown' : 'Load more' }}
+          <span class="quantum-loader-glow"></span>
+          {{ store.page() >= store.pageCount() ? 'All loaded pages shown' : 'Load next scientific batch' }}
         </button>
       }
     </div>

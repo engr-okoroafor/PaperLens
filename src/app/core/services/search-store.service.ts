@@ -3,7 +3,7 @@ import { ParamMap, Router, NavigationEnd } from '@angular/router';
 
 import { aggregatePapers } from '../api/normalize';
 import { filterSample } from '../data/sample-papers';
-import { downloadText, papersToBibtex, papersToCsv, papersToJson } from '../export/export-papers';
+import { downloadText, exportToPrintPdf, exportToWordDoc, papersToBibtex, papersToCsv, papersToJson } from '../export/export-papers';
 import { composeQuery } from '../query/compose-query';
 import { insertClause, matchesPaper, parseQuery, positiveTerms } from '../query/boolean-query';
 import { SortKey, sortPapers } from '../query/sort-papers';
@@ -205,10 +205,20 @@ export class SearchStore {
     this.toast.show('Search saved on this device.');
   }
 
-  export(kind: 'csv' | 'json' | 'bib'): void {
+  export(kind: 'csv' | 'json' | 'bib' | 'pdf' | 'doc'): void {
     const papers = this.visiblePapers();
     if (!papers.length) {
       this.toast.show('Nothing on this page to export.');
+      return;
+    }
+    if (kind === 'pdf') {
+      exportToPrintPdf(papers, this.query());
+      this.toast.show(`Preparing PDF report for ${papers.length} papers...`);
+      return;
+    }
+    if (kind === 'doc') {
+      exportToWordDoc(papers, this.query());
+      this.toast.show(`Exported ${papers.length} papers as Word document (.doc).`);
       return;
     }
     if (kind === 'csv') {

@@ -34,11 +34,11 @@ export class ChartsPanel {
   readonly sourceLabel = computed(() => {
     switch (this.store.aggregateSource()) {
       case 'core':
-        return 'Aggregated by CORE across every work that matches this query.';
+        return 'Aggregated across every open research work that matches this query.';
       case 'sample':
         return 'Sample data. Counts cover the whole built-in set that matches, not only this page.';
       case 'loaded':
-        return 'CORE did not return aggregates, so these charts count the papers loaded so far.';
+        return 'Aggregate index is calculating; currently visualizing all loaded works.';
       default:
         return '';
     }

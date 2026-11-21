@@ -1,6 +1,7 @@
 import { afterEveryRender, Component, effect, inject, signal } from '@angular/core';
 
 import { TOUR_STEPS, TourService } from '../../core/services/tour.service';
+import { TooltipDirective } from '../tooltip/tooltip.directive';
 
 interface Rect {
   top: number;
@@ -11,6 +12,7 @@ interface Rect {
 
 @Component({
   selector: 'app-tour',
+  imports: [TooltipDirective],
   templateUrl: './tour.html',
 })
 export class Tour {

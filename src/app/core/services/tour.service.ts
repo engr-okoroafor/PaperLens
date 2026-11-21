@@ -10,17 +10,17 @@ export const TOUR_STEPS: readonly TourStep[] = [
   {
     id: 'count',
     title: 'Choose how many papers come back',
-    body: 'The slider and the number field stay in lockstep, from 10 to 100. Switch between pages and “load more” when you want the next slice.',
+    body: 'The slider and the number field stay in lockstep, from 10 to 100. Switch between pages and “load more” when you want the next batch.',
   },
   {
     id: 'search',
     title: 'Search with boolean syntax',
-    body: 'AND, OR, NOT, quotes, and parentheses are highlighted as you type. Example pills and the field builder write CORE queries. The second box filters only the papers already loaded.',
+    body: 'AND, OR, NOT, quotes, and parentheses are highlighted as you type. Example pills and the query builder write advanced search queries. The refine box filters only the papers already loaded.',
   },
   {
     id: 'charts',
-    title: 'Read the whole result set',
-    body: 'Charts stay empty until you search. Hover a mark for the count and its share of the chart. Click a year, bar, or slice to narrow the list.',
+    title: 'Interactive visual analytics',
+    body: 'Charts populate dynamically as you search. Hover any data point for count and market share. Click any year, publisher, document type, or topic to instantly filter your results.',
   },
 ];
 
@@ -42,6 +42,12 @@ export class TourService {
     this.helpOpen.set(false);
     this.step.set(0);
     this.open.set(true);
+  }
+
+  prev(): void {
+    if (this.step() > 0) {
+      this.step.update((step) => step - 1);
+    }
   }
 
   next(): void {

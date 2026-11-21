@@ -45,9 +45,33 @@
   </main>
 
   <footer class="site-footer">
-    PaperLens talks to CORE only through a server-side proxy, so an optional API key never reaches
-    the browser.
+    PaperLens connects to the open scientific research index through a secure proxy, keeping keys and private requests completely protected.
   </footer>
+</div>
+
+<div class="scroll-fab-group" [class.visible]="showScrollControls()">
+  <button
+    type="button"
+    class="scroll-fab"
+    (click)="scrollToTop()"
+    aria-label="Scroll to top"
+    appTooltip="Back to top"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+  <button
+    type="button"
+    class="scroll-fab"
+    (click)="scrollToBottom()"
+    aria-label="Scroll to bottom"
+    appTooltip="Jump to bottom"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
 </div>
 
 <app-toast-host />

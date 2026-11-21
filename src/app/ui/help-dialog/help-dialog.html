@@ -10,13 +10,12 @@
         <li><kbd>Esc</kbd> closes dialogs, the tour, and the paper drawer.</li>
       </ul>
       <p>
-        Queries use CORE syntax: <code>AND</code>, <code>OR</code>, parentheses, quotes, <code>title:</code>,
+        Queries use boolean syntax: <code>AND</code>, <code>OR</code>, parentheses, quotes, <code>title:</code>,
         <code>authors:</code>, <code>yearPublished&gt;</code>, and <code>_exists_:</code>. A space means AND.
         NOT is applied to the sample set and to the “filter loaded results” box.
       </p>
       <p class="muted">
-        If CORE is rate-limited or rejects a key, the banner switches to the built-in sample set. That set is
-        marked Sample data on every card.
+        If the primary index is rate-limited or unauthenticated, PaperLens switches smoothly to the built-in sample set, marked "Sample data" on cards.
       </p>
       <div class="link-row">
         <button type="button" class="btn btn-primary" (click)="tour.start()">Replay the tour</button>

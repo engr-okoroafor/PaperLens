@@ -89,15 +89,20 @@ These are beyond the numbered steps in the brief:
 
 1. **Saved and recent searches**, kept in `localStorage`.
 2. **Bookmarks / reading list**, also on this device, with a count in the header.
-3. **Export** of the papers on the current page to CSV, JSON, and BibTeX.
-4. **Shareable URL state** for the query, page size, page, sort, year range, page filter, paging mode, and chart facet.
-5. **Paper detail drawer** with the abstract, venue, DOI, download link, and bookmark control.
-6. **Search-term highlighting** in titles and abstracts, including the page filter, skipping `NOT` terms.
-7. **Sort** by relevance, newest year, or oldest year (`yearPublished:asc|desc` on the CORE request).
-8. **Year range filter** (`yearPublished>=` / `yearPublished<=`).
-9. **Insights strip** with total hits, the year span, and the top publisher. The total counts up.
-10. **First-run guided tour** and a help dialog.
-11. **Toasts** for saves, exports, bookmarks, and copied links.
+3. **Multi-format Report Export**: Download papers on the page directly as formatted Microsoft Word document (`.doc`), high-fidelity printable/saveable PDF with PaperLens branding and metadata, as well as CSV, JSON, and BibTeX.
+4. **Typewriter Animated Search Box**: Dynamic, cycling typewriter prompt displaying complex scientific boolean queries to inspire researchers.
+5. **Vibrant Aurora Palette**: Enhanced atmospheric background incorporating vibrant neon lime, glowing teal, electric violet, and soft magenta.
+6. **Animated Interactive Guided Tour**: Features active spotlight halo, pulsing focus beacon, step progress dots, Back button, and instant Close (X) button with smooth animation.
+7. **Futuristic Quantum Pager**: Glowing glassmorphism pagination controls with active quantum pulse indicator and styled batch loader.
+8. **Animated Back to Top / Bottom Floating Controls**: Responsive FAB group that appears automatically on scroll for seamless navigation.
+9. **Interactive Chart Tooltips & Rich Visuals**: High-contrast, multi-dimensional tooltips showing work volume, percentage share of the research cohort, and custom palette.
+10. **Shareable URL state** for the query, page size, page, sort, year range, page filter, paging mode, and chart facet.
+11. **Paper detail drawer** with the abstract, venue, DOI, download link, and bookmark control.
+12. **Search-term highlighting** in titles and abstracts, including the page filter, skipping `NOT` terms.
+13. **Sort** by relevance, newest year, or oldest year (`yearPublished:asc|desc` on the CORE request).
+14. **Year range filter** (`yearPublished>=` / `yearPublished<=`).
+15. **Insights strip** with total hits, the year span, and the top publisher. The total counts up.
+16. **Toasts** for saves, exports, bookmarks, and copied links.
 12. **Tooltips** on the controls, including the chart surfaces.
 13. **Load more** as well as numbered pages.
 14. **Document type / language toggle** on the donut.

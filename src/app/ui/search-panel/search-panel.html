@@ -22,13 +22,13 @@
       [value]="store.draft()"
       (input)="onDraft($event)"
       (scroll)="syncScroll($event, mirror)"
-      placeholder="(drone AND (package OR delivery))"
+      [placeholder]="animatedPlaceholder()"
       [attr.aria-invalid]="store.draft().trim() && !store.validation().valid"
       aria-describedby="query-help"
-      appTooltip="CORE boolean syntax. AND, OR, NOT, quotes, parentheses, title:, authors:, and yearPublished> are highlighted as you type. Search waits 350ms after you pause."
+      appTooltip="PaperLens boolean syntax. AND, OR, NOT, quotes, parentheses, title:, authors:, and yearPublished> are highlighted as you type. Search waits 350ms after you pause."
     />
   </div>
-  <button class="btn btn-primary" type="submit" appTooltip="Search CORE now. Invalid syntax stays on screen until it balances.">
+  <button class="btn btn-primary" type="submit" appTooltip="Search research index now. Invalid syntax stays on screen until it balances.">
     Search
   </button>
 </form>
@@ -47,6 +47,12 @@
   </button>
   <button type="button" class="btn" (click)="store.share()" appTooltip="Copy a link that reopens this query, page, and filters.">
     Copy link
+  </button>
+  <button type="button" class="btn btn-export" (click)="store.export('pdf')" appTooltip="Download matching papers as an elegant PDF document with PaperLens header and metadata.">
+    Export PDF
+  </button>
+  <button type="button" class="btn btn-export" (click)="store.export('doc')" appTooltip="Download matching papers as formatted Microsoft Word document (.doc) with PaperLens styling.">
+    Export Word (.doc)
   </button>
   <button type="button" class="btn" (click)="store.export('csv')" appTooltip="Download the papers on this page as CSV.">CSV</button>
   <button type="button" class="btn" (click)="store.export('json')" appTooltip="Download the papers on this page as JSON.">JSON</button>
@@ -83,7 +89,7 @@
     class="field"
     [value]="field()"
     (change)="onField($event)"
-    appTooltip="Choose a CORE field, a year comparison, or a DOI exists check."
+    appTooltip="Choose a PaperLens query field, a year comparison, or a DOI exists check."
   >
     @for (option of fields; track option.id) {
       <option [value]="option.id">{{ option.label }}</option>

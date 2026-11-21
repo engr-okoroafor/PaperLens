@@ -4,7 +4,7 @@ import { AggregateBucket } from '../models/paper';
 
 const LIME = '#a3e635';
 const AXIS = '#b7c4b2';
-const PALETTE = ['#a3e635', '#84cc16', '#4ade80', '#bef264', '#65a30d', '#d9f99d', '#86efac', '#ecfccb'];
+const PALETTE = ['#a3e635', '#22d3ee', '#818cf8', '#c084fc', '#f472b6', '#34d399', '#38bdf8', '#fbbf24'];
 
 export function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -134,17 +134,32 @@ function sum(buckets: AggregateBucket[]): number {
 function richTooltip(total: number, includeYear: boolean, trigger: 'item' | 'axis' = 'item'): EChartsCoreOption['tooltip'] {
   return {
     trigger,
-    backgroundColor: 'rgba(8, 16, 12, 0.94)',
-    borderColor: 'rgba(163, 230, 53, 0.38)',
-    textStyle: { color: '#f3f7ef' },
-    extraCssText: 'border-radius:12px;box-shadow:0 0 24px rgba(163,230,53,0.18);',
+    backgroundColor: 'rgba(8, 16, 14, 0.94)',
+    borderColor: 'rgba(56, 189, 248, 0.45)',
+    borderWidth: 1.5,
+    padding: [10, 14],
+    textStyle: { color: '#f3f7ef', fontFamily: 'Outfit, sans-serif' },
+    extraCssText: 'border-radius:12px;box-shadow:0 8px 32px rgba(34, 211, 238, 0.22);backdrop-filter:blur(10px);',
     formatter: (params: unknown) => {
-      const point = (Array.isArray(params) ? params[0] : params) as { name?: string; value?: number };
+      const point = (Array.isArray(params) ? params[0] : params) as { name?: string; value?: number; marker?: string };
       const count = Number(point?.value ?? 0);
       const name = point?.name ?? '';
       const percent = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
-      const year = includeYear && /^\d{4}$/.test(name) ? `<div>Year ${name}</div>` : '';
-      return `<strong>${escapeHtml(name)}</strong>${year}<div>${count} works</div><div>${percent}% of this chart</div>`;
+      const year = includeYear && /^\d{4}$/.test(name) ? `<div style="font-size:0.75rem;color:#7dd3fc;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px;">Year ${name}</div>` : '';
+      return `
+        <div style="min-width:130px;">
+          ${year}
+          <div style="font-weight:600;font-size:0.95rem;color:#f3f7ef;margin-bottom:4px;">${escapeHtml(name)}</div>
+          <div style="display:flex;justify-content:space-between;gap:12px;font-size:0.85rem;color:#a3e635;">
+            <span>Volume:</span>
+            <strong>${count.toLocaleString()} works</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:12px;font-size:0.8rem;color:#94a3b8;margin-top:2px;">
+            <span>Share:</span>
+            <span style="color:#38bdf8;">${percent}% of cohort</span>
+          </div>
+        </div>
+      `;
     },
   };
 }

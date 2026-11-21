@@ -1,21 +1,75 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 
 import { LibraryService, SavedSearch } from '../../core/services/library.service';
 import { SearchStore } from '../../core/services/search-store.service';
 import { EXAMPLE_QUERIES, QueryToken } from '../../core/query/boolean-query';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
+export const TYPEWRITER_SUGGESTIONS: readonly string[] = [
+  '(drone AND (package OR delivery))',
+  'quantum computing AND cryptography',
+  'climate change AND (coral OR reef)',
+  'title:"machine learning" AND yearPublished>2022',
+  'CRISPR AND gene therapy',
+  'neural networks AND natural language',
+  'solar cells AND perovskite',
+];
+
 @Component({
   selector: 'app-search-panel',
   imports: [TooltipDirective],
   templateUrl: './search-panel.html',
 })
-export class SearchPanel {
+export class SearchPanel implements OnInit, OnDestroy {
   readonly store = inject(SearchStore);
   readonly library = inject(LibraryService);
   readonly examples = EXAMPLE_QUERIES;
   readonly keyword = signal('');
   readonly field = signal('anywhere');
+  readonly animatedPlaceholder = signal(TYPEWRITER_SUGGESTIONS[0]);
+
+  private typewriterTimer: ReturnType<typeof setTimeout> | null = null;
+  private suggestionIndex = 0;
+  private charIndex = 0;
+  private isDeleting = false;
+
+  ngOnInit(): void {
+    this.tickTypewriter();
+  }
+
+  ngOnDestroy(): void {
+    if (this.typewriterTimer) {
+      clearTimeout(this.typewriterTimer);
+      this.typewriterTimer = null;
+    }
+  }
+
+  private tickTypewriter(): void {
+    const currentText = TYPEWRITER_SUGGESTIONS[this.suggestionIndex % TYPEWRITER_SUGGESTIONS.length];
+
+    if (this.isDeleting) {
+      this.charIndex -= 1;
+      this.animatedPlaceholder.set(currentText.substring(0, this.charIndex));
+
+      if (this.charIndex <= 0) {
+        this.isDeleting = false;
+        this.suggestionIndex = (this.suggestionIndex + 1) % TYPEWRITER_SUGGESTIONS.length;
+        this.typewriterTimer = setTimeout(() => this.tickTypewriter(), 400);
+        return;
+      }
+      this.typewriterTimer = setTimeout(() => this.tickTypewriter(), 35);
+    } else {
+      this.charIndex += 1;
+      this.animatedPlaceholder.set(currentText.substring(0, this.charIndex));
+
+      if (this.charIndex >= currentText.length) {
+        this.isDeleting = true;
+        this.typewriterTimer = setTimeout(() => this.tickTypewriter(), 2200);
+        return;
+      }
+      this.typewriterTimer = setTimeout(() => this.tickTypewriter(), 70);
+    }
+  }
 
   readonly fields = [
     { id: 'anywhere', label: 'Anywhere' },
