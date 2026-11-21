@@ -1,0 +1,127 @@
+<form
+  class="search-shell"
+  data-tour="search"
+  [class.idle]="!store.draft().trim()"
+  role="search"
+  (submit)="submit($event)"
+>
+  <div class="query-wrap">
+    <div class="query-backdrop" #mirror aria-hidden="true">
+      @for (token of store.validation().tokens; track token.start) {
+        <span [class]="tokenClass(token)">{{ token.text }}</span>
+      }
+    </div>
+    <label class="sr-only" for="query">Boolean search</label>
+    <input
+      id="query"
+      class="query-input"
+      name="query"
+      type="search"
+      autocomplete="off"
+      spellcheck="false"
+      [value]="store.draft()"
+      (input)="onDraft($event)"
+      (scroll)="syncScroll($event, mirror)"
+      placeholder="(drone AND (package OR delivery))"
+      [attr.aria-invalid]="store.draft().trim() && !store.validation().valid"
+      aria-describedby="query-help"
+      appTooltip="CORE boolean syntax. AND, OR, NOT, quotes, parentheses, title:, authors:, and yearPublished> are highlighted as you type. Search waits 350ms after you pause."
+    />
+  </div>
+  <button class="btn btn-primary" type="submit" appTooltip="Search CORE now. Invalid syntax stays on screen until it balances.">
+    Search
+  </button>
+</form>
+
+<p id="query-help" class="query-help" role="status">
+  @if (store.draft().trim() && !store.validation().valid) {
+    <span class="query-error">{{ store.validation().errors[0] }}</span>
+  } @else {
+    <span class="muted">Operators glow as you type. A space means AND. Press / to focus this field.</span>
+  }
+</p>
+
+<div class="examples" aria-label="Saved and recent searches">
+  <button type="button" class="btn" (click)="store.saveSearch()" appTooltip="Save this query, page size, sort, and year range on this device.">
+    Save search
+  </button>
+  <button type="button" class="btn" (click)="store.share()" appTooltip="Copy a link that reopens this query, page, and filters.">
+    Copy link
+  </button>
+  <button type="button" class="btn" (click)="store.export('csv')" appTooltip="Download the papers on this page as CSV.">CSV</button>
+  <button type="button" class="btn" (click)="store.export('json')" appTooltip="Download the papers on this page as JSON.">JSON</button>
+  <button type="button" class="btn" (click)="store.export('bib')" appTooltip="Download the papers on this page as BibTeX.">BibTeX</button>
+  @for (query of library.recent(); track query) {
+    <button type="button" class="chip" (click)="store.replaceQuery(query)" [appTooltip]="'Run the recent search ' + query">
+      Recent: {{ query }}
+    </button>
+  }
+  @for (item of library.saved(); track item.id) {
+    <button type="button" class="chip" (click)="applySaved(item)" [appTooltip]="'Restore saved search ' + item.query">
+      Saved: {{ item.query }}
+    </button>
+  }
+</div>
+
+<div class="examples" aria-label="Example queries">
+  @for (example of examples; track example) {
+    <button
+      type="button"
+      class="chip"
+      (click)="store.replaceQuery(example)"
+      [appTooltip]="'Run the example ' + example"
+    >
+      {{ example }}
+    </button>
+  }
+</div>
+
+<div class="builder" aria-label="Query builder">
+  <label class="sr-only" for="builder-field">Field</label>
+  <select
+    id="builder-field"
+    class="field"
+    [value]="field()"
+    (change)="onField($event)"
+    appTooltip="Choose a CORE field, a year comparison, or a DOI exists check."
+  >
+    @for (option of fields; track option.id) {
+      <option [value]="option.id">{{ option.label }}</option>
+    }
+  </select>
+  <label class="sr-only" for="builder-keyword">Keyword</label>
+  <input
+    id="builder-keyword"
+    class="field builder-keyword"
+    [value]="keyword()"
+    (input)="onKeyword($event)"
+    placeholder="keyword or year"
+    appTooltip="Word, phrase, or year to insert. Phrases with spaces are quoted."
+  />
+  <button type="button" class="btn" (click)="addKeyword()" appTooltip="Insert the field filter into the query.">
+    Insert
+  </button>
+  <button type="button" class="chip" (click)="store.insert('AND')" appTooltip="Insert AND">AND</button>
+  <button type="button" class="chip" (click)="store.insert('OR')" appTooltip="Insert OR">OR</button>
+  <button type="button" class="chip" (click)="store.insert('NOT')" appTooltip="Insert NOT. CORE may ignore NOT; the page filter and sample set honor it.">
+    NOT
+  </button>
+  <button type="button" class="chip" (click)="store.insert('(')" appTooltip="Insert an opening parenthesis">(</button>
+  <button type="button" class="chip" (click)="store.insert(')')" appTooltip="Insert a closing parenthesis">)</button>
+</div>
+
+<div class="refine">
+  <label for="refine">Filter loaded results</label>
+  <input
+    id="refine"
+    class="field refine-input"
+    [value]="store.refine()"
+    (input)="onRefine($event)"
+    placeholder='NOT title:warehouse'
+    appTooltip="Boolean filter over the papers already on this page. It does not call CORE again."
+    [attr.aria-invalid]="store.refine().trim() && !store.refineValidation().valid"
+  />
+  @if (store.refine().trim() && !store.refineValidation().valid) {
+    <p class="query-error" role="status">{{ store.refineValidation().errors[0] }}</p>
+  }
+</div>

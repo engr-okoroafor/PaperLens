@@ -1,0 +1,24 @@
+@if (tour.open()) {
+  <div class="tour-layer">
+    @if (rect(); as spot) {
+      <div
+        class="tour-spot"
+        [style.top.px]="spot.top"
+        [style.left.px]="spot.left"
+        [style.width.px]="spot.width"
+        [style.height.px]="spot.height"
+      ></div>
+    }
+    <section class="tour-card glass" role="dialog" aria-modal="true" aria-labelledby="tour-title">
+      <p class="kicker">Step {{ tour.step() + 1 }} of {{ steps.length }}</p>
+      <h2 id="tour-title">{{ steps[tour.step()]?.title }}</h2>
+      <p>{{ steps[tour.step()]?.body }}</p>
+      <div class="link-row">
+        <button type="button" class="btn" (click)="tour.finish()">Skip</button>
+        <button type="button" class="btn btn-primary" (click)="tour.next()">
+          {{ tour.step() === steps.length - 1 ? 'Done' : 'Next' }}
+        </button>
+      </div>
+    </section>
+  </div>
+}

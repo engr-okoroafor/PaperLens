@@ -1,0 +1,43 @@
+<section class="hero">
+  <p class="kicker">CORE works</p>
+  <h2>Find the paper behind the idea.</h2>
+  <p class="lede">
+    Search the open research index with CORE boolean syntax. Results stay empty until you ask, and
+    a built-in sample set takes over if CORE is unavailable.
+  </p>
+
+  <app-search-panel />
+
+  <app-count-control />
+</section>
+
+<div class="sr-only" aria-live="polite">
+  @if (store.loading()) {
+    Searching CORE.
+  } @else if (store.searched()) {
+    {{ store.totalHits() }} matching works.
+  }
+</div>
+
+<app-insights-strip />
+
+@if (store.notice(); as notice) {
+  <div class="banner" role="status">
+    <span class="pill pill-sample">Sample data</span>
+    <p>
+      <strong>{{ notice.title }}</strong>
+      <span class="muted">{{ notice.message }}</span>
+    </p>
+  </div>
+}
+
+<section class="grid-main" aria-label="Results and charts">
+  <app-results-list />
+
+  <app-charts-panel />
+</section>
+
+<app-paper-drawer />
+<app-reading-list />
+<app-tour />
+<app-help-dialog />

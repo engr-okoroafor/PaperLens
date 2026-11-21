@@ -1,0 +1,33 @@
+@if (library.readingOpen()) {
+  <div class="drawer-root">
+    <button type="button" class="backdrop" aria-label="Close reading list" (click)="library.readingOpen.set(false)"></button>
+    <aside class="drawer glass" role="dialog" aria-modal="true" aria-labelledby="reading-title">
+      <div class="drawer-toolbar">
+        <h2 id="reading-title" class="chart-title">Reading list</h2>
+        <button type="button" class="btn" (click)="library.readingOpen.set(false)" appTooltip="Close the reading list.">
+          Close
+        </button>
+      </div>
+      @if (library.bookmarks().length === 0) {
+        <p class="muted">Bookmark a paper and it stays on this device.</p>
+      } @else {
+        <div class="paper-list">
+          @for (paper of library.bookmarks(); track paper.id) {
+            <article class="glass paper-card">
+              <h3>{{ paper.title }}</h3>
+              <p class="muted">{{ paper.authors.join(', ') }} · {{ paper.year || 'n.d.' }}</p>
+              <div class="link-row">
+                <button type="button" class="btn" (click)="store.openPaper(paper.id)" appTooltip="Open the full record.">
+                  Details
+                </button>
+                <button type="button" class="btn" (click)="library.toggleBookmark(paper)" appTooltip="Remove this bookmark.">
+                  Remove
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </aside>
+  </div>
+}

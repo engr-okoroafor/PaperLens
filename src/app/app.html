@@ -1,0 +1,65 @@
+<a class="skip" href="#main">Skip to content</a>
+<div class="ambient" aria-hidden="true">
+  <span class="orb orb-a"></span>
+  <span class="orb orb-b"></span>
+</div>
+
+<div class="app-frame">
+  <header class="site-header">
+    <a
+      routerLink="/"
+      class="brand"
+      appTooltip="PaperLens home. Search open research papers from CORE."
+    >
+      <span class="logo" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <circle cx="14" cy="14" r="8" stroke="#a3e635" stroke-width="2.4" />
+          <path d="M20 20 L27 27" stroke="#84cc16" stroke-width="2.4" stroke-linecap="round" />
+        </svg>
+      </span>
+      <span>
+        <h1 class="brand-name">PaperLens</h1>
+        <span class="brand-tag">Open research, in focus</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button type="button" class="btn" (click)="tour.helpOpen.set(true)" appTooltip="Shortcuts and a replay of the guided tour. You can also press the question mark key.">
+        Help
+      </button>
+      <button
+        type="button"
+        class="btn"
+        (click)="library.readingOpen.set(!library.readingOpen())"
+        appTooltip="Open papers you bookmarked on this device."
+      >
+        Reading list
+        @if (library.bookmarks().length) {
+          <span class="pill">{{ library.bookmarks().length }}</span>
+        }
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <router-outlet />
+  </main>
+
+  <footer class="site-footer">
+    PaperLens talks to CORE only through a server-side proxy, so an optional API key never reaches
+    the browser.
+  </footer>
+</div>
+
+<app-toast-host />
+
+@if (tips.text(); as tip) {
+  <div
+    class="tooltip"
+    role="tooltip"
+    [class.below]="tips.placement() === 'below'"
+    [style.left.px]="tips.x()"
+    [style.top.px]="tips.y()"
+  >
+    {{ tip }}
+  </div>
+}
