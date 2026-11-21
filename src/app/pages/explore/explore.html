@@ -23,33 +23,7 @@
     </button>
   </form>
 
-  <div class="controls">
-    <div class="control">
-      <label for="count">Papers per page</label>
-      <div class="slider-row">
-        <input
-          id="count"
-          type="range"
-          min="10"
-          max="100"
-          step="1"
-          [value]="store.limit()"
-          (input)="onCount($event)"
-          appTooltip="How many papers to request, from 10 to 100."
-        />
-        <input
-          class="number"
-          type="number"
-          min="10"
-          max="100"
-          aria-label="Papers per page number"
-          [value]="store.limit()"
-          (input)="onCount($event)"
-          appTooltip="Type a page size between 10 and 100."
-        />
-      </div>
-    </div>
-  </div>
+  <app-count-control />
 </section>
 
 <div class="sr-only" aria-live="polite">

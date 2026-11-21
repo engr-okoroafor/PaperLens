@@ -479,6 +479,29 @@ input[type='range'] {
   }
 }
 
+.segment {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.segment .btn[aria-pressed='true'] {
+  background: rgba(163, 230, 53, 0.16);
+  color: var(--lime);
+  border-color: transparent;
+}
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  margin-top: 0.9rem;
+}
+
 .site-footer {
   margin-top: 1.5rem;
   color: var(--faint);

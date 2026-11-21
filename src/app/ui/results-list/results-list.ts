@@ -3,10 +3,11 @@ import { animate, stagger } from 'motion';
 
 import { SearchStore } from '../../core/services/search-store.service';
 import { PaperCard } from '../paper-card/paper-card';
+import { TooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
   selector: 'app-results-list',
-  imports: [PaperCard],
+  imports: [PaperCard, TooltipDirective],
   templateUrl: './results-list.html',
 })
 export class ResultsList {

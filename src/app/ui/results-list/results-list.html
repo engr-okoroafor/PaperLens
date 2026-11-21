@@ -26,10 +26,43 @@
       <p class="muted">Try a broader term, or drop a field filter such as title:.</p>
     </div>
   } @else {
-    <p class="muted">{{ store.totalHits() }} matches · showing {{ store.papers().length }} on this page.</p>
+    <p class="muted">{{ store.rangeLabel() }}</p>
     <div class="paper-list">
       @for (paper of store.papers(); track paper.id) {
         <app-paper-card [paper]="paper" [sample]="store.source() === 'sample'" />
+      }
+    </div>
+    <div class="pager">
+      @if (store.paging() === 'pages') {
+        <button
+          type="button"
+          class="btn"
+          (click)="store.setPage(store.page() - 1)"
+          [disabled]="store.page() <= 1 || store.loading()"
+          appTooltip="Go to the previous page of this query."
+        >
+          Previous
+        </button>
+        <span>Page {{ store.page() }} of {{ store.pageCount() }}</span>
+        <button
+          type="button"
+          class="btn"
+          (click)="store.setPage(store.page() + 1)"
+          [disabled]="store.page() >= store.pageCount() || store.loading()"
+          appTooltip="Go to the next page of this query."
+        >
+          Next
+        </button>
+      } @else {
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="store.loadMore()"
+          [disabled]="store.page() >= store.pageCount() || store.loading()"
+          appTooltip="Append the next page without clearing the papers already on screen."
+        >
+          {{ store.page() >= store.pageCount() ? 'All loaded pages shown' : 'Load more' }}
+        </button>
       }
     </div>
   }

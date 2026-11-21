@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 
 import { SearchStore } from '../../core/services/search-store.service';
+import { CountControl } from '../../ui/count-control/count-control';
 import { ResultsList } from '../../ui/results-list/results-list';
 import { TooltipDirective } from '../../ui/tooltip/tooltip.directive';
 
 @Component({
   selector: 'app-explore',
-  imports: [TooltipDirective, ResultsList],
+  imports: [TooltipDirective, ResultsList, CountControl],
   templateUrl: './explore.html',
 })
 export class Explore {
@@ -14,10 +15,6 @@ export class Explore {
 
   onDraft(event: Event): void {
     this.store.setDraft((event.target as HTMLInputElement).value);
-  }
-
-  onCount(event: Event): void {
-    this.store.setLimit(Number((event.target as HTMLInputElement).value));
   }
 
   submit(event: Event): void {

@@ -1,0 +1,51 @@
+<div class="controls" data-tour="count">
+  <div class="control">
+    <label for="count">Papers returned</label>
+    <div class="slider-row">
+      <input
+        id="count"
+        type="range"
+        min="10"
+        max="100"
+        step="1"
+        [value]="store.limit()"
+        (input)="onCount($event)"
+        appTooltip="How many papers CORE returns per page. The allowed range is 10 to 100."
+      />
+      <input
+        class="number"
+        type="number"
+        min="10"
+        max="100"
+        aria-label="Papers returned"
+        [value]="store.limit()"
+        (input)="onCount($event)"
+        appTooltip="Type a result count between 10 and 100. The slider follows."
+      />
+    </div>
+  </div>
+
+  <div class="control">
+    <span class="label" id="paging-label">Paging</span>
+    <div class="segment" role="group" aria-labelledby="paging-label">
+      <button
+        type="button"
+        class="btn"
+        [attr.aria-pressed]="store.paging() === 'pages'"
+        (click)="store.setPaging('pages')"
+        appTooltip="Replace the list with one page at a time."
+      >
+        Pages
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [attr.aria-pressed]="store.paging() === 'more'"
+        (click)="store.setPaging('more')"
+        appTooltip="Keep the papers you have and append the next page."
+      >
+        Load more
+      </button>
+    </div>
+  </div>
+</div>

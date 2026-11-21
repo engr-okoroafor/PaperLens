@@ -29,9 +29,18 @@ export class SearchStore {
   readonly aggregateSource = signal<AggregateSource | null>(null);
   readonly aggregates = signal<Aggregates | null>(null);
   readonly notice = signal<SearchNotice | null>(null);
+  readonly paging = signal<'pages' | 'more'>('pages');
 
   readonly offset = computed(() => (this.page() - 1) * this.limit());
   readonly pageCount = computed(() => Math.max(1, Math.ceil(this.totalHits() / this.limit())));
+  readonly rangeLabel = computed(() => {
+    if (!this.papers().length) {
+      return '';
+    }
+    const start = this.paging() === 'more' ? 1 : this.offset() + 1;
+    const end = this.paging() === 'more' ? this.papers().length : this.offset() + this.papers().length;
+    return `Showing ${start}–${end} of ${this.totalHits()}`;
+  });
 
   setDraft(value: string): void {
     this.draft.set(value);
@@ -68,8 +77,29 @@ export class SearchStore {
     if (next === this.page()) {
       return;
     }
+    this.paging.set('pages');
     this.page.set(next);
     void this.search();
+  }
+
+  setPaging(mode: 'pages' | 'more'): void {
+    if (mode === this.paging()) {
+      return;
+    }
+    this.paging.set(mode);
+    this.page.set(1);
+    if (this.query().trim()) {
+      void this.search();
+    }
+  }
+
+  loadMore(): void {
+    if (this.loading() || !this.searched() || this.page() >= this.pageCount()) {
+      return;
+    }
+    this.paging.set('more');
+    this.page.update((page) => page + 1);
+    void this.search({ append: true });
   }
 
   private commit(value: string): void {
@@ -82,7 +112,8 @@ export class SearchStore {
     void this.search();
   }
 
-  async search(): Promise<void> {
+  async search(options?: { append?: boolean }): Promise<void> {
+    const append = options?.append === true;
     const query = this.query().trim();
     const id = ++this.requestId;
     if (!query) {
@@ -99,38 +130,39 @@ export class SearchStore {
 
     this.loading.set(true);
     this.searched.set(true);
-    const [page, aggregate] = await Promise.all([
-      this.api.search(query, this.limit(), this.offset(), null),
-      this.api.aggregate(query),
-    ]);
+    const page = await this.api.search(query, this.limit(), this.offset(), null);
+    const aggregate = append ? null : await this.api.aggregate(query);
     if (id !== this.requestId) {
       return;
     }
 
     if (!page.ok) {
-      this.useSample(query, page.message);
+      this.useSample(query, page.message, append);
       this.loading.set(false);
       return;
     }
 
-    this.papers.set(page.papers);
+    this.papers.set(append ? [...this.papers(), ...page.papers] : page.papers);
     this.totalHits.set(page.totalHits);
     this.source.set('core');
     this.notice.set(null);
-    if (aggregate.ok && hasBuckets(aggregate.aggregates)) {
+    if (aggregate?.ok && hasBuckets(aggregate.aggregates)) {
       this.aggregates.set(aggregate.aggregates);
       this.aggregateSource.set('core');
-    } else {
+    } else if (!append) {
       this.aggregates.set(aggregatePapers(page.papers));
       this.aggregateSource.set('loaded');
+    } else if (this.aggregateSource() === 'loaded') {
+      this.aggregates.set(aggregatePapers(this.papers()));
     }
     this.loading.set(false);
   }
 
-  private useSample(query: string, message: string): void {
+  private useSample(query: string, message: string, append: boolean): void {
     const matched = filterSample(query);
     const start = this.offset();
-    this.papers.set(matched.slice(start, start + this.limit()));
+    const slice = matched.slice(start, start + this.limit());
+    this.papers.set(append ? [...this.papers(), ...slice] : slice);
     this.totalHits.set(matched.length);
     this.source.set('sample');
     this.aggregates.set(aggregatePapers(matched));
