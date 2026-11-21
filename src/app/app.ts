@@ -45,6 +45,13 @@ export class App {
           this.showScrollControls.set(scrolled);
         }
       }, { passive: true });
+
+      window.addEventListener('click', (event: MouseEvent) => {
+        const target = event.target as HTMLElement | null;
+        if (this.langMenuOpen() && target && !target.closest('.header-lang-container')) {
+          this.langMenuOpen.set(false);
+        }
+      });
     });
   }
 

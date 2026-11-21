@@ -26,6 +26,33 @@ function asString(value: unknown): string | null {
   return null;
 }
 
+function cleanText(value: unknown): string | null {
+  const raw = asString(value);
+  if (!raw) {
+    return null;
+  }
+  // Strip JATS titles like <jats:title>Abstract</jats:title>
+  let cleaned = raw.replace(/<\/?jats:title[^>]*>.*?<\/jats:title>/gi, ' ');
+  // Strip JATS / XML tags such as </jats:p>, <jats:italic>, etc.
+  cleaned = cleaned.replace(/<\/?jats:[^>]*>/gi, ' ');
+  // Strip generic HTML / XML tags if any remain
+  cleaned = cleaned.replace(/<\/?[a-z0-9]+(?::[a-z0-9]+)?(?:\s+[^>]*)?>/gi, ' ');
+  // Unescape common XML/HTML entities
+  cleaned = cleaned
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&thinsp;/g, '\u2009')
+    .replace(/&nbsp;/g, ' ');
+  // Normalize whitespace first
+  cleaned = cleaned.replace(/\s{2,}/g, ' ').trim();
+  // Clean up redundant "AbstractAbstract" or "Abstract:" or "Abstract " prefixes often prepended in publisher feeds
+  cleaned = cleaned.replace(/^(?:Abstract\s*[:\-\—]?\s*)+/i, '').trim();
+  return cleaned.length > 0 ? cleaned : null;
+}
+
 function asNumber(value: unknown): number | null {
   const number = typeof value === 'number' ? value : typeof value === 'string' ? Number(value) : NaN;
   return Number.isFinite(number) ? number : null;
@@ -122,10 +149,10 @@ export function normalizeWork(value: unknown): Paper | null {
     id,
     title,
     authors: authorsOf(pick(record, 'authors')),
-    year: year !== null && year > 1000 ? Math.round(year) : null,
+    year: year !== null && year > 1000 && year <= 2026 ? Math.round(year) : null,
     publisher: publisherOf(pick(record, 'publisher')),
     journal: journalOf(pick(record, 'journals', 'journal')),
-    abstract: asString(pick(record, 'abstract')),
+    abstract: cleanText(pick(record, 'abstract')),
     doi: asString(pick(record, 'doi')),
     downloadUrl: resolvedDownload,
     language: languageOf(pick(record, 'language')),

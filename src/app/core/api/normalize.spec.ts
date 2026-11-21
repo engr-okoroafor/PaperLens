@@ -35,6 +35,14 @@ describe('CORE normalizer', () => {
     expect(snake?.hasFullText).toBe(false);
   });
 
+  it('strips JATS and XML tags and unescapes entities in abstract text', () => {
+    const raw = normalizeWork({
+      title: 'Drone emissions',
+      abstract: '<jats:title>Abstract</jats:title><jats:p>Drones deliver packages with 4&thinsp;km range &amp; lower emissions.</jats:p>',
+    });
+    expect(raw?.abstract).toBe('Drones deliver packages with 4 km range & lower emissions.');
+  });
+
   it('reads CORE aggregation maps', () => {
     const aggregates = normalizeAggregates({
       aggregations: {
