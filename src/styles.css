@@ -1335,7 +1335,7 @@ html.light-mode .lang-short-code {
 
 .header-lang-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 14px);
   right: 0;
   bottom: auto;
   min-width: 220px;
@@ -1347,15 +1347,15 @@ html.light-mode .lang-short-code {
   z-index: 999999;
   padding: 8px;
   border-radius: 14px;
-  border: 1px solid var(--line);
-  background: rgba(10, 20, 15, 0.98);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(45, 212, 191, 0.2);
+  border: 1px solid var(--line-strong);
+  background: #09140e;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(163, 230, 53, 0.25);
 }
 
 html.light-mode .header-lang-dropdown {
-  background: rgba(255, 255, 255, 0.99);
-  border: 1px solid rgba(15, 23, 42, 0.15);
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.25);
 }
 
 .export-actions-bottom {
@@ -1378,8 +1378,6 @@ html.light-mode .header-lang-dropdown {
 .flag {
   display: inline-block;
   line-height: 1;
-  font-family: 'Twemoji Country Flags', 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
-  font-style: normal;
 }
 
 .lang-dropdown {
