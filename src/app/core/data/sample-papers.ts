@@ -79,7 +79,7 @@ export const SAMPLE_PAPERS: readonly Paper[] = [
     publisher: 'ACM',
     journal: 'ACM Symposium on Field Robotics',
     abstract:
-      'Sample note on inspection flights. These drones survey bridges and do not handle a package or a delivery manifest.',
+      'Sample note on inspection flights. These drones survey bridges and carry cameras rather than cargo.',
     doi: null,
     downloadUrl: null,
     language: 'English',

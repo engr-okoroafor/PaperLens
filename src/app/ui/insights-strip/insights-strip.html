@@ -2,7 +2,7 @@
   <section class="insights" aria-label="Search insights">
     <article class="glass insight">
       <span class="kicker">Matches</span>
-      <strong>{{ store.insights().total }}</strong>
+      <strong><app-counter [value]="store.insights().total" /></strong>
     </article>
     <article class="glass insight">
       <span class="kicker">Year span</span>

@@ -3,6 +3,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { animate } from 'motion';
 
 import { LibraryService } from './core/services/library.service';
+import { TourService } from './core/services/tour.service';
 import { ToastHost } from './ui/toast-host/toast-host';
 import { TooltipDirective } from './ui/tooltip/tooltip.directive';
 import { TooltipService } from './ui/tooltip/tooltip.service';
@@ -15,6 +16,7 @@ import { TooltipService } from './ui/tooltip/tooltip.service';
 export class App {
   readonly tips = inject(TooltipService);
   readonly library = inject(LibraryService);
+  readonly tour = inject(TourService);
   private readonly host = inject(ElementRef<HTMLElement>);
 
   constructor() {
