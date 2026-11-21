@@ -1,0 +1,63 @@
+name: PaperLens CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit-and-test:
+    name: Code Quality, Security & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime (v22 LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Validate TypeScript & Compile
+        run: npx ng build --configuration development
+
+      - name: Execute Vitest Unit Test Suite
+        run: npm test
+
+  production-build:
+    name: Production Bundle Compilation
+    needs: audit-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime (v22 LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Optimized Production Bundle
+        run: npm run build
+
+      - name: Verify Distribution Output
+        run: |
+          test -d dist/paperlens/browser
+          test -f dist/paperlens/browser/index.html
+          echo "Production output verified successfully."
+

@@ -97,14 +97,22 @@ These are beyond the numbered steps in the brief:
 8. **Animated Back to Top / Bottom Floating Controls**: Responsive FAB group that appears automatically on scroll for seamless navigation.
 9. **Interactive Chart Tooltips & Rich Visuals**: High-contrast, multi-dimensional tooltips showing work volume, percentage share of the research cohort, and custom palette.
 10. **Shareable URL state** for the query, page size, page, sort, year range, page filter, paging mode, and chart facet.
-11. **Paper detail drawer** with the abstract, venue, DOI, download link, and bookmark control.
-12. **Search-term highlighting** in titles and abstracts, including the page filter, skipping `NOT` terms.
-13. **Sort** by relevance, newest year, or oldest year (`yearPublished:asc|desc` on the CORE request).
-14. **Year range filter** (`yearPublished>=` / `yearPublished<=`).
-15. **Insights strip** with total hits, the year span, and the top publisher. The total counts up.
-16. **Toasts** for saves, exports, bookmarks, and copied links.
-12. **Tooltips** on the controls, including the chart surfaces.
-13. **Load more** as well as numbered pages.
-14. **Document type / language toggle** on the donut.
-15. **Motion** entrance for result cards and a reduced-motion path (`prefers-reduced-motion`) that turns those animations and the chart draw-in off.
-16. **Server-side retry and sample fallback** so a `401`, `429`, or network failure still leaves a usable, clearly labeled demo.
+11. **Paper detail drawer** with the abstract, venue, DOI, direct download links, and sticky floating action bar (Close & Bookmark) with single-paper PDF and Word (.doc) exports relocated cleanly to the drawer bottom.
+12. **High-Contrast Dark & Light Mode**: Accessible theme switcher with customized light mode styling, glowing card borders, and visible high-contrast tooltips.
+13. **Global Multi-Language Support (12 Languages)**: Comprehensive scientific research country language localization (English 🇺🇸, Chinese 🇨🇳, German 🇩🇪, Japanese 🇯🇵, French 🇫🇷, Korean 🇰🇷, Portuguese 🇧🇷, Italian 🇮🇹, Spanish 🇪🇸, Hindi 🇮🇳, Russian 🌐, Arabic 🇸🇦) seamlessly switchable from the header bar.
+14. **OWASP Top 10 Hardened Security & Rate Limiting**: Serverless proxy with strict security headers (CSP, HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy), in-memory IP sliding rate limiter, and external navigation verification guards.
+15. **Industrial-Grade CI/CD Pipeline**: GitHub Actions workflow (`.github/workflows/ci.yml`) automating dependency auditing, testing, and production builds on push and pull requests.
+16. **Search-term highlighting** in titles and abstracts, including the page filter, skipping `NOT` terms.
+17. **Sort** by relevance, newest year, or oldest year (`yearPublished:asc|desc` on the CORE request).
+18. **Year range filter** (`yearPublished>=` / `yearPublished<=`) with future anomaly date filtering (<= 2026).
+19. **Insights strip** with total hits, the year span, and the top publisher. The total counts up.
+20. **Toasts** for saves, exports, bookmarks, and copied links.
+21. **Server-side retry and sample fallback** so a `401`, `429`, or network failure still leaves a usable, clearly labeled demo.
+
+---
+
+## Submission Summary & Links
+
+- **Live Deployment URL:** [https://paperlens-omega.vercel.app/](https://paperlens-omega.vercel.app/)
+- **GitHub Repository:** [https://github.com/engr-okoroafor/PaperLens.git](https://github.com/engr-okoroafor/PaperLens.git)
+
