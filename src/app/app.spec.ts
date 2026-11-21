@@ -32,7 +32,7 @@ describe('App', () => {
     fixture.detectChanges();
 
     // Open language menu
-    const langBtn = fixture.nativeElement.querySelector('.btn-lang-header') as HTMLButtonElement;
+    const langBtn = fixture.nativeElement.querySelector('.scroll-fab.lang-fab') as HTMLButtonElement;
     langBtn.click();
     fixture.detectChanges();
     await fixture.whenStable();

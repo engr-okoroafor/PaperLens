@@ -44,8 +44,7 @@ export class App {
     });
   }
 
-  toggleLangMenu(event: MouseEvent): void {
-    event.stopPropagation();
+  toggleLangMenu(): void {
     this.langMenuOpen.set(!this.langMenuOpen());
   }
 
@@ -61,11 +60,7 @@ export class App {
     this.theme.toggle();
   }
 
-  changeLanguage(code: LanguageCode, event?: MouseEvent): void {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+  changeLanguage(code: LanguageCode): void {
     this.lang.setLanguage(code);
     this.langMenuOpen.set(false);
   }
