@@ -1,9 +1,9 @@
 <article class="glass panel" aria-live="polite">
-  <p class="kicker">Results</p>
+  <p class="kicker">{{ lang.t('results_kicker') }}</p>
   @if (store.source() === 'core') {
-    <span class="pill pill-live">Live Research Index</span>
+    <span class="pill pill-live">{{ lang.t('live_index') }}</span>
   } @else if (store.source() === 'sample') {
-    <span class="pill pill-sample">Sample data</span>
+    <span class="pill pill-sample">{{ lang.t('sample_data') }}</span>
   }
 
   @if (store.loading()) {
@@ -14,16 +14,15 @@
     </div>
   } @else if (!store.searched()) {
     <div class="empty">
-      <h3>The index is quiet.</h3>
+      <h3>{{ lang.t('empty_index') }}</h3>
       <p class="muted">
-        Enter a query to load papers. Each card will show the title, authors, year, venue, abstract,
-        DOI, and whether full text or a citation count is available.
+        {{ lang.t('empty_index_desc') }}
       </p>
     </div>
   } @else if (store.papers().length === 0) {
     <div class="empty">
-      <h3>No papers for this query.</h3>
-      <p class="muted">Try a broader term, or drop a field filter such as title:.</p>
+      <h3>{{ lang.t('no_papers') }}</h3>
+      <p class="muted">{{ lang.t('no_papers_desc') }}</p>
     </div>
   } @else if (store.visiblePapers().length === 0) {
     <div class="empty">
@@ -54,12 +53,12 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
-          Previous
+          {{ lang.t('previous') }}
         </button>
 
         <div class="pager-quantum-indicator">
           <span class="pager-pulse-dot"></span>
-          <span class="pager-label">PAGE</span>
+          <span class="pager-label">{{ lang.t('page') }}</span>
           <span class="pager-current">{{ store.page() }}</span>
           <span class="pager-divider">/</span>
           <span class="pager-total">{{ store.pageCount() }}</span>
@@ -72,7 +71,7 @@
           [disabled]="store.page() >= store.pageCount() || store.loading()"
           appTooltip="Go to the next page of this query."
         >
-          Next
+          {{ lang.t('next') }}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
@@ -86,7 +85,7 @@
           appTooltip="Append the next page without clearing the papers already on screen."
         >
           <span class="quantum-loader-glow"></span>
-          {{ store.page() >= store.pageCount() ? 'All loaded pages shown' : 'Load next scientific batch' }}
+          {{ store.page() >= store.pageCount() ? lang.t('all_pages_shown') : lang.t('load_more') }}
         </button>
       }
     </div>

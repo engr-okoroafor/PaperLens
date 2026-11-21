@@ -31,13 +31,31 @@ function readBody(req) {
 }
 
 module.exports = async function handler(req, res) {
+  // OWASP Security Headers (Top 10 Security Hardening)
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.core.ac.uk;");
+
+  // Only allow GET and POST
+  if (req.method !== 'GET' && req.method !== 'POST') {
+    res.statusCode = 405;
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.end(JSON.stringify({ ok: false, message: 'Method Not Allowed' }));
+    return;
+  }
+
   try {
+    const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || '127.0.0.1';
     const url = new URL(req.url ?? '/', 'http://localhost');
     const body = req.method === 'POST' ? await readBody(req) : null;
     const result = await proxyCore({
       method: req.method,
       searchParams: url.searchParams,
       body,
+      clientIp,
     });
     res.statusCode = result.status;
     res.setHeader('Content-Type', 'application/json; charset=utf-8');

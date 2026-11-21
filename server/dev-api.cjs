@@ -49,8 +49,9 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify({ ok: false, message: 'Not found' }));
       return;
     }
+    const clientIp = req.socket?.remoteAddress || '127.0.0.1';
     const body = req.method === 'POST' ? await readBody(req) : null;
-    const result = await proxyCore({ method: req.method, searchParams: url.searchParams, body });
+    const result = await proxyCore({ method: req.method, searchParams: url.searchParams, body, clientIp });
     res.writeHead(result.status, {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',

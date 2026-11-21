@@ -2,6 +2,7 @@ import { afterEveryRender, Component, ElementRef, inject } from '@angular/core';
 import { animate, stagger } from 'motion';
 
 import { SearchStore } from '../../core/services/search-store.service';
+import { LanguageService } from '../../core/services/language.service';
 import { PaperCard } from '../paper-card/paper-card';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
@@ -12,6 +13,7 @@ import { TooltipDirective } from '../tooltip/tooltip.directive';
 })
 export class ResultsList {
   readonly store = inject(SearchStore);
+  readonly lang = inject(LanguageService);
   private readonly host = inject(ElementRef<HTMLElement>);
   private animatedKey = '';
 

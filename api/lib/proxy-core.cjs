@@ -3,6 +3,40 @@
  * to api.core.ac.uk. Callers never receive the key.
  */
 
+// In-memory rate limiting map: IP/client -> { count, resetAt }
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 60; // 60 requests per minute per IP
+const clientUsage = new Map();
+
+function checkRateLimit(clientIp) {
+  const now = Date.now();
+  const client = clientUsage.get(clientIp);
+
+  if (!client || now > client.resetAt) {
+    clientUsage.set(clientIp, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { limited: false, remaining: MAX_REQUESTS_PER_WINDOW - 1 };
+  }
+
+  if (client.count >= MAX_REQUESTS_PER_WINDOW) {
+    return { limited: true, retryAfter: Math.ceil((client.resetAt - now) / 1000) };
+  }
+
+  client.count += 1;
+  return { limited: false, remaining: MAX_REQUESTS_PER_WINDOW - client.count };
+}
+
+// Clean up stale rate-limit records every 5 minutes
+if (typeof setInterval !== 'undefined') {
+  setInterval(() => {
+    const now = Date.now();
+    for (const [ip, data] of clientUsage.entries()) {
+      if (now > data.resetAt) {
+        clientUsage.delete(ip);
+      }
+    }
+  }, 5 * 60 * 1000).unref?.();
+}
+
 const CORE_SEARCH = 'https://api.core.ac.uk/v3/search/works';
 const CORE_AGGREGATE = 'https://api.core.ac.uk/v3/search/works/aggregate';
 const DEFAULT_AGGREGATIONS = [
@@ -125,11 +159,27 @@ function allowedSort(value) {
   return null;
 }
 
-async function proxyCore({ method, searchParams, body }) {
+async function proxyCore({ method, searchParams, body, clientIp = '127.0.0.1' }) {
+  // 1. Rate limiting check
+  const rateLimit = checkRateLimit(clientIp);
+  if (rateLimit.limited) {
+    return failure(
+      429,
+      'rate_limited',
+      `PaperLens rate limit exceeded. Please wait ${rateLimit.retryAfter} seconds before making further requests.`,
+      rateLimit.retryAfter,
+    );
+  }
+
   const aggregate = method === 'POST';
   const query = String((aggregate ? body?.q : searchParams.get('q')) ?? '').trim();
   if (!query) {
     return failure(400, 'upstream', 'Enter a query before searching CORE.');
+  }
+
+  // Security: Query input length & character sanitization (OWASP A03 - Injection Prevention)
+  if (query.length > 500) {
+    return failure(400, 'upstream', 'Query string exceeds maximum permitted length (500 characters).');
   }
 
   if (aggregate) {

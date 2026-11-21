@@ -2,6 +2,7 @@ import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 
 import { LibraryService, SavedSearch } from '../../core/services/library.service';
 import { SearchStore } from '../../core/services/search-store.service';
+import { LanguageService } from '../../core/services/language.service';
 import { EXAMPLE_QUERIES, QueryToken } from '../../core/query/boolean-query';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
@@ -23,6 +24,7 @@ export const TYPEWRITER_SUGGESTIONS: readonly string[] = [
 export class SearchPanel implements OnInit, OnDestroy {
   readonly store = inject(SearchStore);
   readonly library = inject(LibraryService);
+  readonly lang = inject(LanguageService);
   readonly examples = EXAMPLE_QUERIES;
   readonly keyword = signal('');
   readonly field = signal('anywhere');

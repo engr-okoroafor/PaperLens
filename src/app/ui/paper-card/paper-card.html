@@ -1,7 +1,11 @@
-<article class="glass paper-card" data-paper (click)="open()">
+<article class="glass paper-card interactive-paper-card" data-paper (click)="open()" [appTooltip]="lang.t('click_card_tip')">
+  <div class="card-glow-badge" aria-hidden="true">
+    <span>{{ lang.t('details') }} &rarr;</span>
+  </div>
+
   <div class="meta-row">
     @if (sample()) {
-      <span class="pill pill-sample">Sample data</span>
+      <span class="pill pill-sample">{{ lang.t('sample_data') }}</span>
     }
     @if (paper().year) {
       <span class="pill">{{ paper().year }}</span>
@@ -13,13 +17,13 @@
       <span class="pill">{{ paper().documentType }}</span>
     }
     <span class="pill" [class.pill-live]="paper().hasFullText">
-      {{ paper().hasFullText ? 'Full text' : 'No full text' }}
+      {{ paper().hasFullText ? lang.t('full_text') : lang.t('no_full_text') }}
     </span>
     <span class="pill">
       @if (paper().citationCount !== null) {
-        {{ paper().citationCount }} citations
+        {{ paper().citationCount }} {{ lang.t('citations') }}
       } @else {
-        Citations unavailable
+        {{ lang.t('no_citations') }}
       }
     </span>
   </div>
@@ -41,17 +45,17 @@
   }
 
   @if (paper().abstract) {
-    <p class="abstract" [class.clamped]="!expanded()">
+    <p class="abstract" [class.clamped]="!expanded()" [class.expanded]="expanded()">
       <app-highlight [text]="paper().abstract ?? ''" [terms]="store.terms()" />
     </p>
     <button
       type="button"
-      class="btn"
+      class="btn btn-abstract-toggle"
       [attr.aria-expanded]="expanded()"
       (click)="toggle($event)"
-      appTooltip="Show or hide the full abstract."
+      appTooltip="Expand or collapse the full abstract in this card."
     >
-      {{ expanded() ? 'Hide abstract' : 'Read abstract' }}
+      {{ expanded() ? lang.t('hide_abstract') : lang.t('read_abstract') }}
     </button>
   } @else {
     <p class="abstract">No abstract was supplied for this work.</p>
@@ -64,27 +68,37 @@
       (click)="bookmark($event)"
       appTooltip="Keep this paper in the reading list stored on this device."
     >
-      {{ library.isBookmarked(paper().id) ? 'Bookmarked' : 'Bookmark' }}
+      {{ library.isBookmarked(paper().id) ? lang.t('bookmarked') : lang.t('bookmark') }}
     </button>
     @if (doiUrl(); as doi) {
-      <a [href]="doi" target="_blank" rel="noopener noreferrer" appTooltip="Open the DOI landing page.">
-        DOI
-      </a>
+      <button
+        type="button"
+        class="chip"
+        (click)="openExternal($event, doi, 'DOI Landing')"
+        appTooltip="Open the DOI landing page (with verification prompt)."
+      >
+        {{ lang.t('doi') }} &nearr;
+      </button>
     }
     @if (paper().downloadUrl; as download) {
-      <a
-        [href]="download"
-        target="_blank"
-        rel="noopener noreferrer"
-        appTooltip="Open the full-text download link from CORE."
+      <button
+        type="button"
+        class="chip"
+        (click)="openExternal($event, download, 'Full-Text Direct PDF')"
+        appTooltip="Open the full-text download link from CORE (with verification prompt)."
       >
-        Download
-      </a>
+        {{ lang.t('download') }} &nearr;
+      </button>
     }
     @if (coreUrl(); as core) {
-      <a [href]="core" target="_blank" rel="noopener noreferrer" appTooltip="Open this work on core.ac.uk.">
-        CORE record
-      </a>
+      <button
+        type="button"
+        class="chip"
+        (click)="openExternal($event, core, 'CORE Record Archive')"
+        appTooltip="Open this work on core.ac.uk."
+      >
+        {{ lang.t('core_record') }} &nearr;
+      </button>
     }
   </div>
 </article>

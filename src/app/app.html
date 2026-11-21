@@ -19,12 +19,12 @@
       </span>
       <span>
         <h1 class="brand-name">PaperLens</h1>
-        <span class="brand-tag">Open research, in focus</span>
+        <span class="brand-tag">{{ lang.t('brand_tag') }}</span>
       </span>
     </a>
     <div class="header-actions">
       <button type="button" class="btn" (click)="tour.helpOpen.set(true)" appTooltip="Shortcuts and a replay of the guided tour. You can also press the question mark key.">
-        Help
+        {{ lang.t('help') }}
       </button>
       <button
         type="button"
@@ -32,7 +32,7 @@
         (click)="library.readingOpen.set(!library.readingOpen())"
         appTooltip="Open papers you bookmarked on this device."
       >
-        Reading list
+        {{ lang.t('reading_list') }}
         @if (library.bookmarks().length) {
           <span class="pill">{{ library.bookmarks().length }}</span>
         }
@@ -45,34 +45,128 @@
   </main>
 
   <footer class="site-footer">
-    PaperLens connects to the open scientific research index through a secure proxy, keeping keys and private requests completely protected.
+    {{ lang.t('footer_text') }}
   </footer>
 </div>
 
-<div class="scroll-fab-group" [class.visible]="showScrollControls()">
+<!-- Floating Action Bar with Theme, Language, Top & Bottom Navigation -->
+<div class="scroll-fab-group" [class.visible]="true">
+  <!-- Theme Toggle Button -->
+  <button
+    type="button"
+    class="scroll-fab theme-fab"
+    (click)="toggleTheme()"
+    [attr.aria-label]="lang.t('toggle_theme')"
+    [appTooltip]="theme.mode() === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+  >
+    @if (theme.mode() === 'dark') {
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    } @else {
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    }
+  </button>
+
+  <!-- Language Switcher Tablet -->
+  <div class="lang-tablet-container">
+    <button
+      type="button"
+      class="scroll-fab lang-fab"
+      (click)="langMenuOpen.set(!langMenuOpen())"
+      [attr.aria-label]="lang.t('select_lang')"
+      [appTooltip]="'Language: ' + lang.activeOption().name"
+    >
+      <span class="flag-icon">{{ lang.activeOption().flag }}</span>
+    </button>
+
+    @if (langMenuOpen()) {
+      <div class="lang-dropdown glass">
+        @for (opt of lang.languages; track opt.code) {
+          <button
+            type="button"
+            class="lang-option-btn"
+            [class.active]="opt.code === lang.currentLang()"
+            (click)="changeLanguage(opt.code)"
+          >
+            <span class="flag">{{ opt.flag }}</span>
+            <span class="name">{{ opt.name }}</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Scroll To Top -->
   <button
     type="button"
     class="scroll-fab"
     (click)="scrollToTop()"
     aria-label="Scroll to top"
-    appTooltip="Back to top"
+    [appTooltip]="lang.t('scroll_top')"
   >
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
   </button>
+
+  <!-- Scroll To Bottom -->
   <button
     type="button"
     class="scroll-fab"
     (click)="scrollToBottom()"
     aria-label="Scroll to bottom"
-    appTooltip="Jump to bottom"
+    [appTooltip]="lang.t('scroll_bottom')"
   >
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="6 9 12 15 18 9"></polyline>
     </svg>
   </button>
 </div>
+
+<!-- Futuristic External Navigation Confirmation Card Modal -->
+@if (modal.pendingLink(); as pending) {
+  <div class="drawer-root external-modal-root" role="dialog" aria-modal="true">
+    <div class="backdrop" (click)="modal.cancel()"></div>
+    <div class="external-confirm-card glass aurora-card">
+      <div class="external-icon-wrapper" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+      </div>
+
+      <p class="kicker">{{ lang.t('confirm_external_title') }}</p>
+      <h3>Leaving PaperLens</h3>
+      <p class="external-desc">{{ lang.t('confirm_external_desc') }}</p>
+
+      <div class="external-dest-box">
+        <span class="external-dest-label">{{ pending.label || 'Target Source' }}</span>
+        <code class="external-dest-url">{{ pending.url }}</code>
+      </div>
+
+      <div class="external-actions">
+        <button type="button" class="btn" (click)="modal.cancel()">
+          {{ lang.t('cancel') }}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="modal.proceed()">
+          {{ lang.t('proceed') }} &nearr;
+        </button>
+      </div>
+    </div>
+  </div>
+}
 
 <app-toast-host />
 

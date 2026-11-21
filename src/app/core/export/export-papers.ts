@@ -54,6 +54,14 @@ export function downloadText(filename: string, content: string, type: string): v
   URL.revokeObjectURL(url);
 }
 
+export function exportSinglePaperDoc(paper: Paper): void {
+  exportToWordDoc([paper], `Paper-${paper.id}`);
+}
+
+export function exportSinglePaperPdf(paper: Paper): void {
+  exportToPrintPdf([paper], `Paper-${paper.id}`);
+}
+
 export function exportToWordDoc(papers: readonly Paper[], query: string): void {
   const dateStr = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   const content = `<!DOCTYPE html>

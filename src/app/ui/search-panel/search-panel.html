@@ -14,7 +14,7 @@
     <label class="sr-only" for="query">Boolean search</label>
     <input
       id="query"
-      class="query-input"
+      class="query-input neon-smoke-input"
       name="query"
       type="search"
       autocomplete="off"
@@ -29,7 +29,7 @@
     />
   </div>
   <button class="btn btn-primary" type="submit" appTooltip="Search research index now. Invalid syntax stays on screen until it balances.">
-    Search
+    {{ lang.t('search_button') }}
   </button>
 </form>
 
@@ -43,16 +43,16 @@
 
 <div class="examples" aria-label="Saved and recent searches">
   <button type="button" class="btn" (click)="store.saveSearch()" appTooltip="Save this query, page size, sort, and year range on this device.">
-    Save search
+    {{ lang.t('save_search') }}
   </button>
   <button type="button" class="btn" (click)="store.share()" appTooltip="Copy a link that reopens this query, page, and filters.">
-    Copy link
+    {{ lang.t('copy_link') }}
   </button>
   <button type="button" class="btn btn-export" (click)="store.export('pdf')" appTooltip="Download matching papers as an elegant PDF document with PaperLens header and metadata.">
-    Export PDF
+    📄 {{ lang.t('export_pdf') }}
   </button>
   <button type="button" class="btn btn-export" (click)="store.export('doc')" appTooltip="Download matching papers as formatted Microsoft Word document (.doc) with PaperLens styling.">
-    Export Word (.doc)
+    📝 {{ lang.t('export_doc') }}
   </button>
   <button type="button" class="btn" (click)="store.export('csv')" appTooltip="Download the papers on this page as CSV.">CSV</button>
   <button type="button" class="btn" (click)="store.export('json')" appTooltip="Download the papers on this page as JSON.">JSON</button>

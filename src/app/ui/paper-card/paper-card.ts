@@ -4,6 +4,8 @@ import { Paper } from '../../core/models/paper';
 import { LibraryService } from '../../core/services/library.service';
 import { SearchStore } from '../../core/services/search-store.service';
 import { ToastService } from '../../core/services/toast.service';
+import { LanguageService } from '../../core/services/language.service';
+import { ModalService } from '../../core/services/modal.service';
 import { HighlightText } from '../highlight/highlight';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
@@ -18,6 +20,8 @@ export class PaperCard {
   readonly expanded = signal(false);
   readonly store = inject(SearchStore);
   readonly library = inject(LibraryService);
+  readonly lang = inject(LanguageService);
+  readonly modal = inject(ModalService);
   private readonly toast = inject(ToastService);
 
   readonly doiUrl = computed(() => {
@@ -34,6 +38,7 @@ export class PaperCard {
 
   toggle(event: Event): void {
     event.stopPropagation();
+    event.preventDefault();
     this.expanded.update((open) => !open);
   }
 
@@ -45,5 +50,11 @@ export class PaperCard {
 
   open(): void {
     this.store.openPaper(this.paper().id);
+  }
+
+  openExternal(event: Event, url: string, label: string): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.modal.confirmNavigation(url, label, this.paper().title);
   }
 }

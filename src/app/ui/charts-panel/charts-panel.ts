@@ -6,6 +6,7 @@ import { barChart, donutChart, prefersReducedMotion, yearChart } from '../../cor
 import { Facet } from '../../core/models/paper';
 import { facetLabel } from '../../core/query/compose-query';
 import { SearchStore } from '../../core/services/search-store.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
@@ -16,18 +17,22 @@ import { TooltipDirective } from '../tooltip/tooltip.directive';
 })
 export class ChartsPanel {
   readonly store = inject(SearchStore);
+  readonly theme = inject(ThemeService);
   readonly donut = signal<'type' | 'language'>('type');
   private readonly motion = !prefersReducedMotion();
 
-  readonly yearOptions = computed(() => yearChart(this.store.aggregates()?.years ?? [], this.motion));
-  readonly publisherOptions = computed(() => barChart(this.store.aggregates()?.publishers ?? [], this.motion));
-  readonly topicOptions = computed(() => barChart(this.store.aggregates()?.topics ?? [], this.motion));
+  readonly isLight = computed(() => this.theme.mode() === 'light');
+
+  readonly yearOptions = computed(() => yearChart(this.store.aggregates()?.years ?? [], this.motion, this.isLight()));
+  readonly publisherOptions = computed(() => barChart(this.store.aggregates()?.publishers ?? [], this.motion, this.isLight()));
+  readonly topicOptions = computed(() => barChart(this.store.aggregates()?.topics ?? [], this.motion, this.isLight()));
   readonly donutOptions = computed(() =>
     donutChart(
       this.donut() === 'type'
         ? (this.store.aggregates()?.documentTypes ?? [])
         : (this.store.aggregates()?.languages ?? []),
       this.motion,
+      this.isLight(),
     ),
   );
 

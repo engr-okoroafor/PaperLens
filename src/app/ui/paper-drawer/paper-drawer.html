@@ -4,45 +4,62 @@
     <aside class="drawer glass" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
       <div class="drawer-toolbar">
         <button id="drawer-close" type="button" class="btn" (click)="store.closePaper()" appTooltip="Close the paper details.">
-          Close
+          {{ lang.t('close') }} &times;
         </button>
         <button type="button" class="btn" (click)="bookmark()" appTooltip="Save or remove this paper in the reading list on this device.">
-          {{ library.isBookmarked(paper.id) ? 'Bookmarked' : 'Bookmark' }}
+          {{ library.isBookmarked(paper.id) ? lang.t('bookmarked') : lang.t('bookmark') }}
         </button>
       </div>
+
+      <div class="export-single-actions">
+        <button type="button" class="btn btn-export" (click)="downloadPdf()" appTooltip="Download this paper's verified dossier in formatted PDF.">
+          📄 {{ lang.t('export_single_pdf') }}
+        </button>
+        <button type="button" class="btn btn-export" (click)="downloadDoc()" appTooltip="Download this paper as a Microsoft Word (.doc) report.">
+          📝 {{ lang.t('export_single_doc') }}
+        </button>
+      </div>
+
       <p class="kicker">{{ paper.year || 'Year unknown' }} · {{ paper.language || 'Language unknown' }}</p>
       <h2 id="drawer-title">
         <app-highlight [text]="paper.title" [terms]="store.terms()" />
       </h2>
-      <p>{{ paper.authors.join(', ') || 'Unknown authors' }}</p>
+      <p class="authors-line">{{ paper.authors.join(', ') || 'Unknown authors' }}</p>
       <p class="muted">{{ paper.journal || 'No journal' }} · {{ paper.publisher || 'No publisher' }}</p>
       <div class="meta-row">
         <span class="pill">{{ paper.documentType || 'Type unknown' }}</span>
-        <span class="pill" [class.pill-live]="paper.hasFullText">{{ paper.hasFullText ? 'Full text' : 'No full text' }}</span>
+        <span class="pill" [class.pill-live]="paper.hasFullText">{{ paper.hasFullText ? lang.t('full_text') : lang.t('no_full_text') }}</span>
         <span class="pill">
           @if (paper.citationCount !== null) {
-            {{ paper.citationCount }} citations
+            {{ paper.citationCount }} {{ lang.t('citations') }}
           } @else {
-            Citations unavailable
+            {{ lang.t('no_citations') }}
           }
         </span>
         @if (paper.fieldOfStudy) {
           <span class="pill">{{ paper.fieldOfStudy }}</span>
         }
       </div>
-      <p class="abstract">
-        @if (paper.abstract) {
-          <app-highlight [text]="paper.abstract" [terms]="store.terms()" />
-        } @else {
-          No abstract was supplied for this work.
-        }
-      </p>
-      <div class="link-row">
+      <div class="abstract-box">
+        <h3>Abstract</h3>
+        <p class="abstract-text">
+          @if (paper.abstract) {
+            <app-highlight [text]="paper.abstract" [terms]="store.terms()" />
+          } @else {
+            No abstract was supplied for this work.
+          }
+        </p>
+      </div>
+      <div class="link-row" style="margin-top: 1.2rem">
         @if (paper.doi) {
-          <a [href]="'https://doi.org/' + paper.doi" target="_blank" rel="noopener noreferrer">DOI {{ paper.doi }}</a>
+          <button type="button" class="chip" (click)="openExternal('https://doi.org/' + paper.doi, 'DOI Landing')">
+            DOI: {{ paper.doi }} &nearr;
+          </button>
         }
         @if (paper.downloadUrl) {
-          <a [href]="paper.downloadUrl" target="_blank" rel="noopener noreferrer">Download</a>
+          <button type="button" class="btn btn-primary" (click)="openExternal(paper.downloadUrl, 'Full-Text Direct PDF')">
+            {{ lang.t('download') }} Direct PDF &nearr;
+          </button>
         }
       </div>
     </aside>

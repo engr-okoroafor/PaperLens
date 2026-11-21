@@ -10,13 +10,14 @@ export function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-export function yearChart(buckets: AggregateBucket[], motion: boolean): EChartsCoreOption {
+export function yearChart(buckets: AggregateBucket[], motion: boolean, isLight = false): EChartsCoreOption {
+  const axisColor = isLight ? '#475569' : AXIS;
   return {
     ...base(motion),
     tooltip: richTooltip(sum(buckets), true, 'axis'),
     grid: { left: 42, right: 12, top: 24, bottom: 28 },
-    xAxis: axis(buckets.map((bucket) => bucket.label), 'category'),
-    yAxis: axis([], 'value'),
+    xAxis: axis(buckets.map((bucket) => bucket.label), 'category', axisColor),
+    yAxis: axis([], 'value', axisColor),
     series: [
       {
         type: 'line',
@@ -25,8 +26,8 @@ export function yearChart(buckets: AggregateBucket[], motion: boolean): EChartsC
         data: buckets.map((bucket) => bucket.count),
         showSymbol: true,
         symbolSize: 8,
-        lineStyle: { width: 2.4, color: LIME, shadowBlur: 14, shadowColor: 'rgba(163, 230, 53, 0.7)' },
-        itemStyle: { color: '#ecfccb', shadowBlur: 10, shadowColor: 'rgba(163, 230, 53, 0.85)' },
+        lineStyle: { width: 2.8, color: LIME, shadowBlur: 14, shadowColor: 'rgba(163, 230, 53, 0.7)' },
+        itemStyle: { color: isLight ? '#4d7c0f' : '#ecfccb', shadowBlur: 10, shadowColor: 'rgba(163, 230, 53, 0.85)' },
         areaStyle: {
           color: {
             type: 'linear',
@@ -35,8 +36,8 @@ export function yearChart(buckets: AggregateBucket[], motion: boolean): EChartsC
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: 'rgba(163, 230, 53, 0.5)' },
-              { offset: 1, color: 'rgba(132, 204, 22, 0.02)' },
+              { offset: 0, color: isLight ? 'rgba(132, 204, 22, 0.45)' : 'rgba(163, 230, 53, 0.5)' },
+              { offset: 1, color: isLight ? 'rgba(132, 204, 22, 0.04)' : 'rgba(132, 204, 22, 0.02)' },
             ],
           },
         },
@@ -45,16 +46,17 @@ export function yearChart(buckets: AggregateBucket[], motion: boolean): EChartsC
   };
 }
 
-export function barChart(buckets: AggregateBucket[], motion: boolean): EChartsCoreOption {
+export function barChart(buckets: AggregateBucket[], motion: boolean, isLight = false): EChartsCoreOption {
   const rows = [...buckets].reverse();
+  const axisColor = isLight ? '#475569' : AXIS;
   return {
     ...base(motion),
     tooltip: richTooltip(sum(buckets), false),
     grid: { left: 124, right: 16, top: 8, bottom: 8 },
-    xAxis: axis([], 'value'),
+    xAxis: axis([], 'value', axisColor),
     yAxis: {
-      ...axis(rows.map((bucket) => bucket.label), 'category'),
-      axisLabel: { color: AXIS, width: 110, overflow: 'truncate' },
+      ...axis(rows.map((bucket) => bucket.label), 'category', axisColor),
+      axisLabel: { color: axisColor, width: 110, overflow: 'truncate', fontWeight: isLight ? 'bold' : 'normal' },
     },
     series: [
       {
@@ -71,7 +73,7 @@ export function barChart(buckets: AggregateBucket[], motion: boolean): EChartsCo
             x2: 1,
             y2: 0,
             colorStops: [
-              { offset: 0, color: '#65a30d' },
+              { offset: 0, color: isLight ? '#16a34a' : '#65a30d' },
               { offset: 1, color: LIME },
             ],
           },
@@ -83,7 +85,8 @@ export function barChart(buckets: AggregateBucket[], motion: boolean): EChartsCo
   };
 }
 
-export function donutChart(buckets: AggregateBucket[], motion: boolean): EChartsCoreOption {
+export function donutChart(buckets: AggregateBucket[], motion: boolean, isLight = false): EChartsCoreOption {
+  const labelColor = isLight ? '#0f172a' : '#e7f0e2';
   return {
     ...base(motion),
     tooltip: richTooltip(sum(buckets), false),
@@ -98,11 +101,11 @@ export function donutChart(buckets: AggregateBucket[], motion: boolean): ECharts
           itemStyle: {
             color: PALETTE[index % PALETTE.length],
             shadowBlur: 16,
-            shadowColor: 'rgba(163, 230, 53, 0.25)',
+            shadowColor: `${PALETTE[index % PALETTE.length]}40`,
           },
         })),
-        label: { color: '#e7f0e2', fontSize: 11 },
-        itemStyle: { borderColor: '#07110c', borderWidth: 2 },
+        label: { color: labelColor, fontSize: 11, fontWeight: 'bold' },
+        itemStyle: { borderColor: isLight ? '#ffffff' : '#07110c', borderWidth: 2 },
       },
     ],
   };
@@ -117,13 +120,13 @@ function base(motion: boolean): EChartsCoreOption {
   };
 }
 
-function axis(data: string[], type: 'category' | 'value'): Record<string, unknown> {
+function axis(data: string[], type: 'category' | 'value', color = AXIS): Record<string, unknown> {
   return {
     type,
     data: type === 'category' ? data : undefined,
-    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.16)' } },
-    axisLabel: { color: AXIS },
-    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+    axisLine: { lineStyle: { color: 'rgba(128,128,128,0.25)' } },
+    axisLabel: { color },
+    splitLine: { lineStyle: { color: 'rgba(128,128,128,0.1)' } },
   };
 }
 

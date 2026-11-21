@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 
 import { SearchStore } from '../../core/services/search-store.service';
+import { LanguageService } from '../../core/services/language.service';
 import { HelpDialog } from '../../ui/help-dialog/help-dialog';
 import { ChartsPanel } from '../../ui/charts-panel/charts-panel';
 import { CountControl } from '../../ui/count-control/count-control';
@@ -18,4 +19,5 @@ import { Tour } from '../../ui/tour/tour';
 })
 export class Explore {
   readonly store = inject(SearchStore);
+  readonly lang = inject(LanguageService);
 }

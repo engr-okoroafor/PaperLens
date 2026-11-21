@@ -4,6 +4,9 @@ import { animate } from 'motion';
 
 import { LibraryService } from './core/services/library.service';
 import { TourService } from './core/services/tour.service';
+import { ThemeService } from './core/services/theme.service';
+import { LanguageService, LanguageCode } from './core/services/language.service';
+import { ModalService } from './core/services/modal.service';
 import { ToastHost } from './ui/toast-host/toast-host';
 import { TooltipDirective } from './ui/tooltip/tooltip.directive';
 import { TooltipService } from './ui/tooltip/tooltip.service';
@@ -17,7 +20,11 @@ export class App {
   readonly tips = inject(TooltipService);
   readonly library = inject(LibraryService);
   readonly tour = inject(TourService);
+  readonly theme = inject(ThemeService);
+  readonly lang = inject(LanguageService);
+  readonly modal = inject(ModalService);
   readonly showScrollControls = signal(false);
+  readonly langMenuOpen = signal(false);
   private readonly host = inject(ElementRef<HTMLElement>);
 
   constructor() {
@@ -33,7 +40,7 @@ export class App {
       }
 
       window.addEventListener('scroll', () => {
-        const scrolled = window.scrollY > 250;
+        const scrolled = window.scrollY > 200;
         if (scrolled !== this.showScrollControls()) {
           this.showScrollControls.set(scrolled);
         }
@@ -47,5 +54,14 @@ export class App {
 
   scrollToBottom(): void {
     window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+  }
+
+  toggleTheme(): void {
+    this.theme.toggle();
+  }
+
+  changeLanguage(code: LanguageCode): void {
+    this.lang.setLanguage(code);
+    this.langMenuOpen.set(false);
   }
 }

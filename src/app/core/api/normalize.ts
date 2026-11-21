@@ -183,9 +183,13 @@ export function normalizeAggregates(payload: unknown): Aggregates | null {
   if (!bag) {
     return null;
   }
-  const years = bucketsFrom(pick(bag, 'yearPublished', 'year_published'), 120).sort(
-    (a, b) => Number(a.label) - Number(b.label),
-  );
+  const currentYear = new Date().getFullYear();
+  const years = bucketsFrom(pick(bag, 'yearPublished', 'year_published'), 120)
+    .filter((bucket) => {
+      const y = Number(bucket.label);
+      return Number.isFinite(y) && y >= 1800 && y <= currentYear;
+    })
+    .sort((a, b) => Number(a.label) - Number(b.label));
   return {
     years,
     publishers: bucketsFrom(pick(bag, 'publisher', 'publishers'), 8),
@@ -228,8 +232,15 @@ export function aggregatePapers(papers: readonly Paper[]): Aggregates {
       .slice(0, limit);
   };
 
+  const currentYear = new Date().getFullYear();
   const years = tally(
-    papers.map((paper) => (paper.year ? String(paper.year) : null)),
+    papers
+      .map((paper) => (paper.year ? String(paper.year) : null))
+      .filter((y) => {
+        if (!y) return false;
+        const num = Number(y);
+        return Number.isFinite(num) && num >= 1800 && num <= currentYear;
+      }),
     120,
   ).sort((a, b) => Number(a.label) - Number(b.label));
 
