@@ -1,0 +1,83 @@
+<section class="hero">
+  <p class="kicker">CORE works</p>
+  <h2>Find the paper behind the idea.</h2>
+  <p class="lede">
+    Search the open research index with CORE boolean syntax. Results, citations, and corpus charts
+    stay quiet until you ask a question.
+  </p>
+
+  <form class="search-shell" [class.idle]="!draft().trim()" role="search" (submit)="submit($event)">
+    <label class="sr-only" for="query">Boolean search</label>
+    <input
+      id="query"
+      name="query"
+      type="search"
+      autocomplete="off"
+      [value]="draft()"
+      (input)="onDraft($event)"
+      placeholder="(drone AND (package OR delivery))"
+      appTooltip="Boolean query sent to CORE. AND, OR, NOT, quotes, and parentheses are supported."
+    />
+    <button
+      class="btn btn-primary"
+      type="submit"
+      appTooltip="Run this query. The index stays empty until you search."
+    >
+      Search
+    </button>
+  </form>
+
+  <div class="controls">
+    <div class="control">
+      <label for="count">Papers per page</label>
+      <div class="slider-row">
+        <input
+          id="count"
+          type="range"
+          min="10"
+          max="100"
+          step="1"
+          [value]="count()"
+          (input)="onCount($event)"
+          appTooltip="How many papers CORE should return, from 10 to 100."
+        />
+        <input
+          class="number"
+          type="number"
+          min="10"
+          max="100"
+          aria-label="Papers per page number"
+          [value]="count()"
+          (input)="onCount($event)"
+          appTooltip="Type a page size between 10 and 100."
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="grid-main" aria-label="Results and charts">
+  <article class="glass panel empty">
+    <p class="kicker">Results</p>
+    @if (submitted()) {
+      <h3>Ready for “{{ submitted() }}”</h3>
+      <p class="muted">
+        Page size is {{ count() }}. The CORE client is the next layer — this shell already holds
+        the query, the count, and the empty states.
+      </p>
+    } @else {
+      <h3>The index is quiet.</h3>
+      <p class="muted">
+        Enter a query to explore papers. Try a phrase, a field like title:, or a grouped boolean
+        expression.
+      </p>
+    }
+  </article>
+
+  <aside class="glass panel" aria-label="Charts">
+    <p class="kicker">Corpus</p>
+    <h3 class="h-display">Charts wait for a query</h3>
+    <p class="muted">Year, publisher, language, and topic views appear after a search.</p>
+    <div class="chart-frame">No query yet</div>
+  </aside>
+</section>
