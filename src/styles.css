@@ -1334,10 +1334,7 @@ html.light-mode .lang-short-code {
 }
 
 .header-lang-dropdown {
-  position: absolute;
-  top: calc(100% + 14px);
-  right: 0;
-  bottom: auto;
+  position: fixed;
   min-width: 220px;
   max-width: min(92vw, 280px);
   max-height: 70vh;

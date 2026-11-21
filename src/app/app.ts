@@ -25,6 +25,7 @@ export class App {
   readonly modal = inject(ModalService);
   readonly showScrollControls = signal(false);
   readonly langMenuOpen = signal(false);
+  readonly langMenuPosition = signal<{ top: number; right: number }>({ top: 0, right: 0 });
   private readonly host = inject(ElementRef<HTMLElement>);
 
   constructor() {
@@ -34,25 +35,50 @@ export class App {
           return;
         }
       } catch {}
-      const header = this.host.nativeElement.querySelector('.site-header');
-      if (header) {
-        animate(header, { opacity: [0, 1], y: [-10, 0] }, { duration: 0.55 });
-      }
 
       window.addEventListener('scroll', () => {
         const scrolled = window.scrollY > 200;
         if (scrolled !== this.showScrollControls()) {
           this.showScrollControls.set(scrolled);
         }
+        if (this.langMenuOpen()) {
+          this.updateDropdownPosition();
+        }
+      }, { passive: true });
+
+      window.addEventListener('resize', () => {
+        if (this.langMenuOpen()) {
+          this.updateDropdownPosition();
+        }
       }, { passive: true });
 
       window.addEventListener('click', (event: MouseEvent) => {
         const target = event.target as HTMLElement | null;
-        if (this.langMenuOpen() && target && !target.closest('.header-lang-container')) {
+        if (this.langMenuOpen() && target && !target.closest('.header-lang-container') && !target.closest('.header-lang-dropdown')) {
           this.langMenuOpen.set(false);
         }
       });
     });
+  }
+
+  toggleLangMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    const willOpen = !this.langMenuOpen();
+    if (willOpen) {
+      this.updateDropdownPosition();
+    }
+    this.langMenuOpen.set(willOpen);
+  }
+
+  private updateDropdownPosition(): void {
+    const trigger = this.host.nativeElement.querySelector('.btn-lang-header') as HTMLElement | null;
+    if (trigger) {
+      const rect = trigger.getBoundingClientRect();
+      this.langMenuPosition.set({
+        top: rect.bottom + 8,
+        right: Math.max(12, window.innerWidth - rect.right),
+      });
+    }
   }
 
   scrollToTop(): void {
