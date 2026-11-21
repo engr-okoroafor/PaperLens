@@ -1427,6 +1427,10 @@ html.light-mode .header-lang-dropdown {
   color: var(--teal);
 }
 
+.lang-option-btn * {
+  pointer-events: none;
+}
+
 .lang-option-btn.active {
   background: rgba(163, 230, 53, 0.18);
   color: var(--lime);
