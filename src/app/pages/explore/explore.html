@@ -19,6 +19,8 @@
   }
 </div>
 
+<app-insights-strip />
+
 @if (store.notice(); as notice) {
   <div class="banner" role="status">
     <span class="pill pill-sample">Sample data</span>
@@ -32,20 +34,8 @@
 <section class="grid-main" aria-label="Results and charts">
   <app-results-list />
 
-  <aside class="glass panel" aria-label="Charts">
-    <p class="kicker">Corpus</p>
-    <h3 class="h-display">Charts wait for a query</h3>
-    <p class="muted">Year, publisher, language, and topic views appear after a search.</p>
-    <div class="chart-frame">
-      @if (!store.searched()) {
-        No query yet
-      } @else if (store.aggregateSource() === 'core') {
-        Aggregation is ready from CORE
-      } @else if (store.aggregateSource() === 'sample') {
-        Sample totals are ready
-      } @else {
-        Totals use the loaded page
-      }
-    </div>
-  </aside>
+  <app-charts-panel />
 </section>
+
+<app-paper-drawer />
+<app-reading-list />

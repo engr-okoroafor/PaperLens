@@ -434,6 +434,38 @@ input[type='range'] {
   font-family: var(--font-display);
 }
 
+.chart-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+}
+
+.chart-block {
+  margin-top: 1rem;
+}
+
+.chart-block h3,
+.chart-heading h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.chart-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.chart {
+  height: 230px;
+  width: 100%;
+}
+
+.chart-short {
+  height: 220px;
+}
+
 .chart-frame {
   min-height: 180px;
   border-radius: 1.1rem;
@@ -601,6 +633,94 @@ input[type='range'] {
   margin-top: 0.9rem;
 }
 
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.insights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 0.9rem 0;
+}
+
+.insight {
+  padding: 0.85rem 1rem;
+}
+
+.insight strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+
+.hit {
+  background: rgba(163, 230, 53, 0.22);
+  color: inherit;
+  border-radius: 0.25rem;
+  padding: 0 0.12rem;
+}
+
+.drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(2, 6, 4, 0.62);
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(440px, 100%);
+  margin: 0;
+  border-radius: 0;
+  padding: 1.1rem;
+  overflow: auto;
+}
+
+.drawer-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.toasts {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.toast {
+  border: 1px solid rgba(163, 230, 53, 0.35);
+  color: var(--text);
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-radius: 1rem;
+  box-shadow: var(--glow);
+}
+
+.year {
+  width: 6.5rem;
+}
+
 .site-footer {
   margin-top: 1.5rem;
   color: var(--faint);
@@ -629,8 +749,13 @@ input[type='range'] {
 
 @media (max-width: 860px) {
   .grid-main,
-  .site-header {
+  .site-header,
+  .insights {
     display: block;
+  }
+
+  .insight + .insight {
+    margin-top: 0.7rem;
   }
 
   .header-note {

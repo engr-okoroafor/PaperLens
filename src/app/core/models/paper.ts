@@ -32,6 +32,11 @@ export interface Aggregates {
 export type DataSource = 'core' | 'sample';
 export type AggregateSource = 'core' | 'loaded' | 'sample';
 
+export interface Facet {
+  kind: 'year' | 'publisher' | 'documentType' | 'language' | 'author' | 'topic';
+  value: string;
+}
+
 export interface SearchNotice {
   tone: 'sample' | 'warning';
   title: string;

@@ -1,0 +1,92 @@
+<aside class="glass panel" data-tour="charts" aria-label="Corpus charts">
+  <p class="kicker">Corpus</p>
+  <h2 class="chart-title">The shape of the results</h2>
+
+  @if (!store.searched()) {
+    <p class="muted">Charts stay blank until a query is running. A year, a publisher, or a topic can then narrow the list.</p>
+    <div class="chart-frame">No query yet</div>
+  } @else {
+    <p class="muted">{{ sourceLabel() }} Hover a mark for the count and its share. Click a bar or a year to filter.</p>
+
+    @if (store.facet(); as facet) {
+      <button
+        type="button"
+        class="chip"
+        (click)="store.toggleFacet(facet)"
+        appTooltip="Remove this chart filter and show the full query again."
+      >
+        Filtered to {{ facetText() }} · clear
+      </button>
+    }
+
+    <section class="chart-block">
+      <h3>Publications per year</h3>
+      @if (store.aggregates()?.years?.length) {
+        <div
+          echarts
+          class="chart"
+          [options]="yearOptions()"
+          (chartClick)="onSeries($event, 'year')"
+          appTooltip="Area of works by publication year. Click a year to keep only that year."
+        ></div>
+      } @else {
+        <div class="chart-frame">No year values</div>
+      }
+    </section>
+
+    <section class="chart-block">
+      <h3>Top publishers</h3>
+      @if (store.aggregates()?.publishers?.length) {
+        <div
+          echarts
+          class="chart"
+          [options]="publisherOptions()"
+          (chartClick)="onSeries($event, 'publisher')"
+          appTooltip="Publishers with the most matching works. Click a bar to filter."
+        ></div>
+      } @else {
+        <div class="chart-frame">No publisher values</div>
+      }
+    </section>
+
+    <section class="chart-block">
+      <div class="chart-heading">
+        <h3>{{ donut() === 'type' ? 'Document type' : 'Language' }}</h3>
+        <div class="segment" role="group" aria-label="Donut measure">
+          <button type="button" class="btn" [attr.aria-pressed]="donut() === 'type'" (click)="donut.set('type')" appTooltip="Show document types.">
+            Type
+          </button>
+          <button type="button" class="btn" [attr.aria-pressed]="donut() === 'language'" (click)="donut.set('language')" appTooltip="Show languages.">
+            Language
+          </button>
+        </div>
+      </div>
+      @if (donut() === 'type' ? store.aggregates()?.documentTypes?.length : store.aggregates()?.languages?.length) {
+        <div
+          echarts
+          class="chart chart-short"
+          [options]="donutOptions()"
+          (chartClick)="onSeries($event, donut() === 'type' ? 'documentType' : 'language')"
+          appTooltip="Share of the corpus. Click a slice to filter."
+        ></div>
+      } @else {
+        <div class="chart-frame">No values for this cut</div>
+      }
+    </section>
+
+    <section class="chart-block">
+      <h3>Topics</h3>
+      @if (store.aggregates()?.topics?.length) {
+        <div
+          echarts
+          class="chart"
+          [options]="topicOptions()"
+          (chartClick)="onSeries($event, 'topic')"
+          appTooltip="Field-of-study frequency. Click a topic to filter."
+        ></div>
+      } @else {
+        <div class="chart-frame">No topic values</div>
+      }
+    </section>
+  }
+</aside>

@@ -1,0 +1,50 @@
+@if (store.selected(); as paper) {
+  <div class="drawer-root">
+    <button type="button" class="backdrop" aria-label="Close paper details" (click)="store.closePaper()"></button>
+    <aside class="drawer glass" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <div class="drawer-toolbar">
+        <button id="drawer-close" type="button" class="btn" (click)="store.closePaper()" appTooltip="Close the paper details.">
+          Close
+        </button>
+        <button type="button" class="btn" (click)="bookmark()" appTooltip="Save or remove this paper in the reading list on this device.">
+          {{ library.isBookmarked(paper.id) ? 'Bookmarked' : 'Bookmark' }}
+        </button>
+      </div>
+      <p class="kicker">{{ paper.year || 'Year unknown' }} · {{ paper.language || 'Language unknown' }}</p>
+      <h2 id="drawer-title">
+        <app-highlight [text]="paper.title" [terms]="store.terms()" />
+      </h2>
+      <p>{{ paper.authors.join(', ') || 'Unknown authors' }}</p>
+      <p class="muted">{{ paper.journal || 'No journal' }} · {{ paper.publisher || 'No publisher' }}</p>
+      <div class="meta-row">
+        <span class="pill">{{ paper.documentType || 'Type unknown' }}</span>
+        <span class="pill" [class.pill-live]="paper.hasFullText">{{ paper.hasFullText ? 'Full text' : 'No full text' }}</span>
+        <span class="pill">
+          @if (paper.citationCount !== null) {
+            {{ paper.citationCount }} citations
+          } @else {
+            Citations unavailable
+          }
+        </span>
+        @if (paper.fieldOfStudy) {
+          <span class="pill">{{ paper.fieldOfStudy }}</span>
+        }
+      </div>
+      <p class="abstract">
+        @if (paper.abstract) {
+          <app-highlight [text]="paper.abstract" [terms]="store.terms()" />
+        } @else {
+          No abstract was supplied for this work.
+        }
+      </p>
+      <div class="link-row">
+        @if (paper.doi) {
+          <a [href]="'https://doi.org/' + paper.doi" target="_blank" rel="noopener noreferrer">DOI {{ paper.doi }}</a>
+        }
+        @if (paper.downloadUrl) {
+          <a [href]="paper.downloadUrl" target="_blank" rel="noopener noreferrer">Download</a>
+        }
+      </div>
+    </aside>
+  </div>
+}

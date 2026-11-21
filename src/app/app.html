@@ -22,7 +22,19 @@
         <span class="brand-tag">Open research, in focus</span>
       </span>
     </a>
-    <p class="header-note">A CORE index explorer for SterlingCode</p>
+    <div class="header-actions">
+      <button
+        type="button"
+        class="btn"
+        (click)="library.readingOpen.set(!library.readingOpen())"
+        appTooltip="Open papers you bookmarked on this device."
+      >
+        Reading list
+        @if (library.bookmarks().length) {
+          <span class="pill">{{ library.bookmarks().length }}</span>
+        }
+      </button>
+    </div>
   </header>
 
   <main id="main">
@@ -34,6 +46,8 @@
     the browser.
   </footer>
 </div>
+
+<app-toast-host />
 
 @if (tips.text(); as tip) {
   <div

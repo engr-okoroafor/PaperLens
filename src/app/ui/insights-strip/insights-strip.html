@@ -1,0 +1,16 @@
+@if (store.searched()) {
+  <section class="insights" aria-label="Search insights">
+    <article class="glass insight">
+      <span class="kicker">Matches</span>
+      <strong>{{ store.insights().total }}</strong>
+    </article>
+    <article class="glass insight">
+      <span class="kicker">Year span</span>
+      <strong>{{ store.insights().span }}</strong>
+    </article>
+    <article class="glass insight">
+      <span class="kicker">Top publisher</span>
+      <strong>{{ store.insights().publisher }}</strong>
+    </article>
+  </section>
+}

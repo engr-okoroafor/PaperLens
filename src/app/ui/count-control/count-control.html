@@ -48,4 +48,46 @@
       </button>
     </div>
   </div>
+
+  <div class="control">
+    <label for="sort">Sort</label>
+    <select
+      id="sort"
+      class="field"
+      [value]="store.sort()"
+      (change)="onSort($event)"
+      appTooltip="Relevance keeps CORE's order. Year sorts the request with yearPublished."
+    >
+      <option value="relevance">Relevance</option>
+      <option value="year_desc">Newest year</option>
+      <option value="year_asc">Oldest year</option>
+    </select>
+  </div>
+
+  <div class="control">
+    <label for="year-from">Year from</label>
+    <input
+      id="year-from"
+      class="number year"
+      type="number"
+      min="1800"
+      max="2100"
+      [value]="store.yearFrom() ?? ''"
+      (change)="onYear('from', $event)"
+      appTooltip="Only works published in or after this year."
+    />
+  </div>
+  <div class="control">
+    <label for="year-to">Year to</label>
+    <input
+      id="year-to"
+      class="number year"
+      type="number"
+      min="1800"
+      max="2100"
+      [value]="store.yearTo() ?? ''"
+      (change)="onYear('to', $event)"
+      appTooltip="Only works published in or before this year."
+    />
+  </div>
 </div>

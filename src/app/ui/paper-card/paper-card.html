@@ -1,4 +1,4 @@
-<article class="glass paper-card" data-paper>
+<article class="glass paper-card" data-paper (click)="open()">
   <div class="meta-row">
     @if (sample()) {
       <span class="pill pill-sample">Sample data</span>
@@ -24,7 +24,7 @@
     </span>
   </div>
 
-  <h3>{{ paper().title }}</h3>
+  <h3><app-highlight [text]="paper().title" [terms]="store.terms()" /></h3>
   <p class="muted">{{ authorLine() }}</p>
   @if (paper().journal || paper().publisher) {
     <p class="muted">
@@ -41,12 +41,14 @@
   }
 
   @if (paper().abstract) {
-    <p class="abstract" [class.clamped]="!expanded()">{{ paper().abstract }}</p>
+    <p class="abstract" [class.clamped]="!expanded()">
+      <app-highlight [text]="paper().abstract ?? ''" [terms]="store.terms()" />
+    </p>
     <button
       type="button"
       class="btn"
       [attr.aria-expanded]="expanded()"
-      (click)="toggle()"
+      (click)="toggle($event)"
       appTooltip="Show or hide the full abstract."
     >
       {{ expanded() ? 'Hide abstract' : 'Read abstract' }}
@@ -55,7 +57,15 @@
     <p class="abstract">No abstract was supplied for this work.</p>
   }
 
-  <div class="link-row" style="margin-top: 0.8rem">
+  <div class="link-row" style="margin-top: 0.8rem" (click)="$event.stopPropagation()">
+    <button
+      type="button"
+      class="btn"
+      (click)="bookmark($event)"
+      appTooltip="Keep this paper in the reading list stored on this device."
+    >
+      {{ library.isBookmarked(paper().id) ? 'Bookmarked' : 'Bookmark' }}
+    </button>
     @if (doiUrl(); as doi) {
       <a [href]="doi" target="_blank" rel="noopener noreferrer" appTooltip="Open the DOI landing page.">
         DOI

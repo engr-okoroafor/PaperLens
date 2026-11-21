@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 
+import { LibraryService, SavedSearch } from '../../core/services/library.service';
 import { SearchStore } from '../../core/services/search-store.service';
 import { EXAMPLE_QUERIES, QueryToken } from '../../core/query/boolean-query';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
@@ -11,6 +12,7 @@ import { TooltipDirective } from '../tooltip/tooltip.directive';
 })
 export class SearchPanel {
   readonly store = inject(SearchStore);
+  readonly library = inject(LibraryService);
   readonly examples = EXAMPLE_QUERIES;
   readonly keyword = signal('');
   readonly field = signal('anywhere');
@@ -70,6 +72,10 @@ export class SearchPanel {
       return 'tok-error';
     }
     return '';
+  }
+
+  applySaved(item: SavedSearch): void {
+    this.store.restore(item);
   }
 
   addKeyword(): void {

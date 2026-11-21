@@ -1,0 +1,5 @@
+<div class="toasts" aria-live="polite" aria-atomic="false">
+  @for (message of toast.messages(); track message.id) {
+    <button type="button" class="toast glass" (click)="toast.dismiss(message.id)">{{ message.text }}</button>
+  }
+</div>

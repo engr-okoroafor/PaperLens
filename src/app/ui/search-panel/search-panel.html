@@ -41,6 +41,28 @@
   }
 </p>
 
+<div class="examples" aria-label="Saved and recent searches">
+  <button type="button" class="btn" (click)="store.saveSearch()" appTooltip="Save this query, page size, sort, and year range on this device.">
+    Save search
+  </button>
+  <button type="button" class="btn" (click)="store.share()" appTooltip="Copy a link that reopens this query, page, and filters.">
+    Copy link
+  </button>
+  <button type="button" class="btn" (click)="store.export('csv')" appTooltip="Download the papers on this page as CSV.">CSV</button>
+  <button type="button" class="btn" (click)="store.export('json')" appTooltip="Download the papers on this page as JSON.">JSON</button>
+  <button type="button" class="btn" (click)="store.export('bib')" appTooltip="Download the papers on this page as BibTeX.">BibTeX</button>
+  @for (query of library.recent(); track query) {
+    <button type="button" class="chip" (click)="store.replaceQuery(query)" [appTooltip]="'Run the recent search ' + query">
+      Recent: {{ query }}
+    </button>
+  }
+  @for (item of library.saved(); track item.id) {
+    <button type="button" class="chip" (click)="applySaved(item)" [appTooltip]="'Restore saved search ' + item.query">
+      Saved: {{ item.query }}
+    </button>
+  }
+</div>
+
 <div class="examples" aria-label="Example queries">
   @for (example of examples; track example) {
     <button
