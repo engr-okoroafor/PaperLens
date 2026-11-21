@@ -58,7 +58,7 @@
       {{ expanded() ? lang.t('hide_abstract') : lang.t('read_abstract') }}
     </button>
   } @else {
-    <p class="abstract">No abstract was supplied for this work.</p>
+    <p class="abstract">{{ lang.t('no_abstract_supplied', 'No abstract was supplied for this work.') }}</p>
   }
 
   <div class="link-row" style="margin-top: 0.8rem" (click)="$event.stopPropagation()">

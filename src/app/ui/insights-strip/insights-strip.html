@@ -1,15 +1,15 @@
 @if (store.searched()) {
   <section class="insights" aria-label="Search insights">
     <article class="glass insight">
-      <span class="kicker">Matches</span>
+      <span class="kicker">{{ lang.t('matches', 'Matches') }}</span>
       <strong><app-counter [value]="store.insights().total" /></strong>
     </article>
     <article class="glass insight">
-      <span class="kicker">Year span</span>
+      <span class="kicker">{{ lang.t('year_span', 'Year span') }}</span>
       <strong>{{ store.insights().span }}</strong>
     </article>
     <article class="glass insight">
-      <span class="kicker">Top publisher</span>
+      <span class="kicker">{{ lang.t('top_publisher', 'Top publisher') }}</span>
       <strong>{{ store.insights().publisher }}</strong>
     </article>
   </section>

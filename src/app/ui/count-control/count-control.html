@@ -1,6 +1,6 @@
 <div class="controls" data-tour="count">
   <div class="control">
-    <label for="count">Papers returned</label>
+    <label for="count">{{ lang.t('papers_returned', 'Papers returned') }}</label>
     <div class="slider-row">
       <input
         id="count"
@@ -26,7 +26,7 @@
   </div>
 
   <div class="control">
-    <span class="label" id="paging-label">Paging</span>
+    <span class="label" id="paging-label">{{ lang.t('paging_label', 'Paging') }}</span>
     <div class="segment" role="group" aria-labelledby="paging-label">
       <button
         type="button"
@@ -35,7 +35,7 @@
         (click)="store.setPaging('pages')"
         appTooltip="Replace the list with one page at a time."
       >
-        Pages
+        {{ lang.t('pages_mode', 'Pages') }}
       </button>
       <button
         type="button"
@@ -44,13 +44,13 @@
         (click)="store.setPaging('more')"
         appTooltip="Keep the papers you have and append the next page."
       >
-        Load more
+        {{ lang.t('load_more_mode', 'Load more') }}
       </button>
     </div>
   </div>
 
   <div class="control">
-    <label for="sort">Sort</label>
+    <label for="sort">{{ lang.t('sort_label', 'Sort') }}</label>
     <select
       id="sort"
       class="field"
@@ -58,14 +58,14 @@
       (change)="onSort($event)"
       appTooltip="Relevance keeps PaperLens' default relevance order. Year sorts the request with yearPublished."
     >
-      <option value="relevance">Relevance</option>
-      <option value="year_desc">Newest year</option>
-      <option value="year_asc">Oldest year</option>
+      <option value="relevance">{{ lang.t('sort_relevance', 'Relevance') }}</option>
+      <option value="year_desc">{{ lang.t('sort_newest', 'Newest year') }}</option>
+      <option value="year_asc">{{ lang.t('sort_oldest', 'Oldest year') }}</option>
     </select>
   </div>
 
   <div class="control">
-    <label for="year-from">Year from</label>
+    <label for="year-from">{{ lang.t('year_from', 'Year from') }}</label>
     <input
       id="year-from"
       class="number year"
@@ -78,7 +78,7 @@
     />
   </div>
   <div class="control">
-    <label for="year-to">Year to</label>
+    <label for="year-to">{{ lang.t('year_to', 'Year to') }}</label>
     <input
       id="year-to"
       class="number year"

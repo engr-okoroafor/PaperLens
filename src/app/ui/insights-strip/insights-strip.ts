@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 
 import { SearchStore } from '../../core/services/search-store.service';
+import { LanguageService } from '../../core/services/language.service';
 import { Counter } from '../counter/counter';
 
 @Component({
@@ -10,4 +11,5 @@ import { Counter } from '../counter/counter';
 })
 export class InsightsStrip {
   readonly store = inject(SearchStore);
+  readonly lang = inject(LanguageService);
 }

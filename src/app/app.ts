@@ -70,6 +70,7 @@ export class App {
 
   changeLanguage(code: LanguageCode, event?: MouseEvent): void {
     if (event) {
+      event.preventDefault();
       event.stopPropagation();
     }
     this.lang.setLanguage(code);

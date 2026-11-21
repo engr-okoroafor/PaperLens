@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 
 import { SortKey } from '../../core/query/sort-papers';
 import { SearchStore } from '../../core/services/search-store.service';
+import { LanguageService } from '../../core/services/language.service';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
@@ -11,6 +12,7 @@ import { TooltipDirective } from '../tooltip/tooltip.directive';
 })
 export class CountControl {
   readonly store = inject(SearchStore);
+  readonly lang = inject(LanguageService);
 
   onCount(event: Event): void {
     this.store.setLimit(Number((event.target as HTMLInputElement).value));

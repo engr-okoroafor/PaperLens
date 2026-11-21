@@ -33,12 +33,12 @@
           }
         </div>
         <div class="abstract-box">
-          <h3>Abstract</h3>
+          <h3>{{ lang.t('abstract_title', 'Abstract') }}</h3>
           <p class="abstract-text">
             @if (paper.abstract) {
               <app-highlight [text]="paper.abstract" [terms]="store.terms()" />
             } @else {
-              No abstract was supplied for this work.
+              {{ lang.t('no_abstract_supplied', 'No abstract was supplied for this work.') }}
             }
           </p>
         </div>
