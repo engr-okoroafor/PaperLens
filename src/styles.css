@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
-@theme {
+/* Theme definition using standard CSS custom properties for full tooling compatibility */
+:root {
   --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Syne', 'Outfit', ui-sans-serif, sans-serif;
   --color-lime-neon: #a3e635;
@@ -1281,10 +1282,17 @@ html.light-mode .lang-short-code {
   top: calc(100% + 8px);
   right: 0;
   bottom: auto;
-  min-width: 190px;
-  max-height: 380px;
+  min-width: 220px;
+  max-width: min(92vw, 280px);
+  max-height: 70vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   z-index: 100;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 20px rgba(45, 212, 191, 0.15);
 }
 
 .export-actions-bottom {
@@ -1547,6 +1555,35 @@ kbd {
     display: block;
   }
 
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .header-lang-dropdown {
+    right: 0;
+    max-width: calc(100vw - 2rem);
+    min-width: 200px;
+  }
+
+  .scroll-fab-group {
+    right: 1rem;
+    bottom: 2rem;
+  }
+
+  .scroll-fab {
+    width: 38px;
+    height: 38px;
+  }
+
   .insight+.insight {
     margin-top: 0.7rem;
   }
@@ -1557,6 +1594,43 @@ kbd {
 
   .search-shell {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-actions .btn {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+  }
+
+  .header-lang-container {
+    position: static;
+  }
+
+  .header-lang-dropdown {
+    left: 1rem;
+    right: 1rem;
+    top: auto;
+    bottom: auto;
+    width: calc(100vw - 2rem);
+    max-width: none;
+    max-height: 55vh;
+  }
+
+  .scroll-fab-group {
+    right: 0.75rem;
+    bottom: 1.5rem;
   }
 }
 
