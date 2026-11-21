@@ -37,7 +37,7 @@
   @if (store.draft().trim() && !store.validation().valid) {
     <span class="query-error">{{ store.validation().errors[0] }}</span>
   } @else {
-    <span class="muted">Operators glow as you type. A space means AND. Press / to focus this field.</span>
+    <span class="muted">{{ lang.t('operators_hint', 'Operators glow as you type. A space means AND. Press / to focus this field.') }}</span>
   }
 </p>
 
@@ -59,12 +59,12 @@
   <button type="button" class="btn" (click)="store.export('bib')" appTooltip="Download the papers on this page as BibTeX.">BibTeX</button>
   @for (query of library.recent(); track query) {
     <button type="button" class="chip" (click)="store.replaceQuery(query)" [appTooltip]="'Run the recent search ' + query">
-      Recent: {{ query }}
+      {{ lang.t('recent_prefix', 'Recent') }}: {{ query }}
     </button>
   }
   @for (item of library.saved(); track item.id) {
     <button type="button" class="chip" (click)="applySaved(item)" [appTooltip]="'Restore saved search ' + item.query">
-      Saved: {{ item.query }}
+      {{ lang.t('saved_prefix', 'Saved') }}: {{ item.query }}
     </button>
   }
 </div>
@@ -101,11 +101,11 @@
     class="field builder-keyword"
     [value]="keyword()"
     (input)="onKeyword($event)"
-    placeholder="keyword or year"
+    [placeholder]="lang.t('keyword_placeholder', 'keyword or year')"
     appTooltip="Word, phrase, or year to insert. Phrases with spaces are quoted."
   />
   <button type="button" class="btn" (click)="addKeyword()" appTooltip="Insert the field filter into the query.">
-    Insert
+    {{ lang.t('insert', 'Insert') }}
   </button>
   <button type="button" class="chip" (click)="store.insert('AND')" appTooltip="Insert AND">AND</button>
   <button type="button" class="chip" (click)="store.insert('OR')" appTooltip="Insert OR">OR</button>
@@ -123,7 +123,7 @@
     class="field refine-input"
     [value]="store.refine()"
     (input)="onRefine($event)"
-    placeholder='NOT title:warehouse'
+    [placeholder]="lang.t('filter_loaded_placeholder', 'NOT title:warehouse')"
     appTooltip="Boolean filter over the papers already on this page. It does not call CORE again."
     [attr.aria-invalid]="store.refine().trim() && !store.refineValidation().valid"
   />

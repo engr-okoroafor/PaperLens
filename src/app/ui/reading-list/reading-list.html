@@ -9,7 +9,7 @@
         </button>
       </div>
       @if (library.bookmarks().length === 0) {
-        <p class="muted">Bookmark a paper and it stays on this device.</p>
+        <p class="muted">{{ lang.t('bookmark_empty', 'Bookmark a paper and it stays on this device.') }}</p>
       } @else {
         <div class="paper-list">
           @for (paper of library.bookmarks(); track paper.id) {
@@ -21,7 +21,7 @@
                   {{ lang.t('details') }}
                 </button>
                 <button type="button" class="btn" (click)="library.toggleBookmark(paper)" appTooltip="Remove this bookmark.">
-                  Remove
+                  {{ lang.t('remove', 'Remove') }}
                 </button>
               </div>
             </article>

@@ -26,14 +26,14 @@
     </div>
   } @else if (store.visiblePapers().length === 0) {
     <div class="empty">
-      <h3>The page filter removed every loaded paper.</h3>
-      <p class="muted">Clear “Filter loaded results”, or loosen the boolean expression.</p>
+      <h3>{{ lang.t('page_filter_cleared', 'The page filter removed every loaded paper.') }}</h3>
+      <p class="muted">{{ lang.t('page_filter_hint', 'Clear “Filter loaded results”, or loosen the boolean expression.') }}</p>
     </div>
   } @else {
     <p class="muted">
       {{ store.rangeLabel() }}
       @if (store.visiblePapers().length !== store.papers().length) {
-        · page filter keeps {{ store.visiblePapers().length }}
+        · {{ lang.t('page_filter_keeps', 'page filter keeps') }} {{ store.visiblePapers().length }}
       }
     </p>
     <div class="paper-list">

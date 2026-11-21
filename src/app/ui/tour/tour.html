@@ -11,7 +11,7 @@
         <div class="tour-beacon" aria-hidden="true">
           <span class="tour-beacon-ping"></span>
           <span class="tour-beacon-dot"></span>
-          <span class="tour-beacon-label">Active focus</span>
+          <span class="tour-beacon-label">{{ lang.t('active_focus', 'Active focus') }}</span>
         </div>
       </div>
     }
@@ -36,20 +36,20 @@
         </button>
       </div>
 
-      <p class="kicker">Step {{ tour.step() + 1 }} of {{ steps.length }}</p>
+      <p class="kicker">{{ lang.t('step_indicator', 'Step') }} {{ tour.step() + 1 }} {{ lang.t('of', 'of') }} {{ steps.length }}</p>
       <h2 id="tour-title">{{ steps[tour.step()]?.title }}</h2>
       <p class="tour-body">{{ steps[tour.step()]?.body }}</p>
 
       <div class="tour-footer">
-        <button type="button" class="btn" (click)="tour.finish()">Skip tour</button>
+        <button type="button" class="btn" (click)="tour.finish()">{{ lang.t('skip_tour', 'Skip tour') }}</button>
         <div class="tour-nav-buttons">
           @if (tour.step() > 0) {
             <button type="button" class="btn" (click)="tour.prev()">
-              &larr; Back
+              &larr; {{ lang.t('back', 'Back') }}
             </button>
           }
           <button type="button" class="btn btn-primary" (click)="tour.next()">
-            {{ tour.step() === steps.length - 1 ? 'Get started' : 'Next &rarr;' }}
+            {{ tour.step() === steps.length - 1 ? lang.t('get_started', 'Get started') : lang.t('next_step', 'Next') }} &rarr;
           </button>
         </div>
       </div>

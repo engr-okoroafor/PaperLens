@@ -2,23 +2,21 @@
   <div class="drawer-root">
     <button type="button" class="backdrop" aria-label="Close help" (click)="tour.helpOpen.set(false)"></button>
     <section class="help glass" role="dialog" aria-modal="true" aria-labelledby="help-title">
-      <p class="kicker">Shortcuts</p>
-      <h2 id="help-title">How to use PaperLens</h2>
+      <p class="kicker">{{ lang.t('shortcuts', 'Shortcuts') }}</p>
+      <h2 id="help-title">{{ lang.t('how_to_use', 'How to use PaperLens') }}</h2>
       <ul>
-        <li><kbd>/</kbd> focuses the search box.</li>
-        <li><kbd>?</kbd> opens this help.</li>
-        <li><kbd>Esc</kbd> closes dialogs, the tour, and the paper drawer.</li>
+        <li><kbd>/</kbd> {{ lang.t('shortcut_slash', '/ focuses the search box.') }}</li>
+        <li><kbd>?</kbd> {{ lang.t('shortcut_question', '? opens this help.') }}</li>
+        <li><kbd>Esc</kbd> {{ lang.t('shortcut_esc', 'Esc closes dialogs, the tour, and the paper drawer.') }}</li>
       </ul>
       <p>
-        Queries use boolean syntax: <code>AND</code>, <code>OR</code>, parentheses, quotes, <code>title:</code>,
-        <code>authors:</code>, <code>yearPublished&gt;</code>, and <code>_exists_:</code>. A space means AND.
-        NOT is applied to the sample set and to the “filter loaded results” box.
+        {{ lang.t('help_syntax_desc') }}
       </p>
       <p class="muted">
-        If the primary index is rate-limited or unauthenticated, PaperLens switches smoothly to the built-in sample set, marked "Sample data" on cards.
+        {{ lang.t('help_fallback_desc') }}
       </p>
       <div class="link-row">
-        <button type="button" class="btn btn-primary" (click)="tour.start()">Replay the tour</button>
+        <button type="button" class="btn btn-primary" (click)="tour.start()">{{ lang.t('replay_tour', 'Replay the tour') }}</button>
         <button type="button" class="btn" (click)="tour.helpOpen.set(false)">{{ lang.t('close') }}</button>
       </div>
     </section>

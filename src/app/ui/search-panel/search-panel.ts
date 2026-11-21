@@ -28,14 +28,20 @@ export class SearchPanel implements OnInit, OnDestroy {
   readonly examples = EXAMPLE_QUERIES;
   readonly keyword = signal('');
   readonly field = signal('anywhere');
-  readonly animatedPlaceholder = signal(TYPEWRITER_SUGGESTIONS[0]);
+  readonly animatedPlaceholder = signal('');
 
   private typewriterTimer: ReturnType<typeof setTimeout> | null = null;
   private suggestionIndex = 0;
   private charIndex = 0;
   private isDeleting = false;
+  private lastLang = '';
+
+  constructor() {
+    this.animatedPlaceholder.set(this.lang.getSuggestions()[0]);
+  }
 
   ngOnInit(): void {
+    this.lastLang = this.lang.currentLang();
     this.tickTypewriter();
   }
 
@@ -47,7 +53,15 @@ export class SearchPanel implements OnInit, OnDestroy {
   }
 
   private tickTypewriter(): void {
-    const currentText = TYPEWRITER_SUGGESTIONS[this.suggestionIndex % TYPEWRITER_SUGGESTIONS.length];
+    const currentLang = this.lang.currentLang();
+    if (this.lastLang && this.lastLang !== currentLang) {
+      this.lastLang = currentLang;
+      this.suggestionIndex = 0;
+      this.charIndex = 0;
+      this.isDeleting = false;
+    }
+    const suggestions = this.lang.getSuggestions();
+    const currentText = suggestions[this.suggestionIndex % suggestions.length];
 
     if (this.isDeleting) {
       this.charIndex -= 1;
@@ -55,7 +69,7 @@ export class SearchPanel implements OnInit, OnDestroy {
 
       if (this.charIndex <= 0) {
         this.isDeleting = false;
-        this.suggestionIndex = (this.suggestionIndex + 1) % TYPEWRITER_SUGGESTIONS.length;
+        this.suggestionIndex = (this.suggestionIndex + 1) % suggestions.length;
         this.typewriterTimer = setTimeout(() => this.tickTypewriter(), 400);
         return;
       }

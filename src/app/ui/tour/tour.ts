@@ -1,6 +1,7 @@
 import { afterEveryRender, Component, effect, inject, signal } from '@angular/core';
 
 import { TOUR_STEPS, TourService } from '../../core/services/tour.service';
+import { LanguageService } from '../../core/services/language.service';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
 interface Rect {
@@ -17,6 +18,7 @@ interface Rect {
 })
 export class Tour {
   readonly tour = inject(TourService);
+  readonly lang = inject(LanguageService);
   readonly steps = TOUR_STEPS;
   readonly rect = signal<Rect | null>(null);
 
