@@ -2,27 +2,23 @@
   <p class="kicker">CORE works</p>
   <h2>Find the paper behind the idea.</h2>
   <p class="lede">
-    Search the open research index with CORE boolean syntax. Results, citations, and corpus charts
-    stay quiet until you ask a question.
+    Search the open research index with CORE boolean syntax. Results stay empty until you ask, and
+    a built-in sample set takes over if CORE is unavailable.
   </p>
 
-  <form class="search-shell" [class.idle]="!draft().trim()" role="search" (submit)="submit($event)">
+  <form class="search-shell" [class.idle]="!store.draft().trim()" role="search" (submit)="submit($event)">
     <label class="sr-only" for="query">Boolean search</label>
     <input
       id="query"
       name="query"
       type="search"
       autocomplete="off"
-      [value]="draft()"
+      [value]="store.draft()"
       (input)="onDraft($event)"
       placeholder="(drone AND (package OR delivery))"
-      appTooltip="Boolean query sent to CORE. AND, OR, NOT, quotes, and parentheses are supported."
+      appTooltip="Boolean query sent to CORE. Operators, quotes, and parentheses are supported."
     />
-    <button
-      class="btn btn-primary"
-      type="submit"
-      appTooltip="Run this query. The index stays empty until you search."
-    >
+    <button class="btn btn-primary" type="submit" appTooltip="Search CORE now. Empty queries clear the page.">
       Search
     </button>
   </form>
@@ -37,9 +33,9 @@
           min="10"
           max="100"
           step="1"
-          [value]="count()"
+          [value]="store.limit()"
           (input)="onCount($event)"
-          appTooltip="How many papers CORE should return, from 10 to 100."
+          appTooltip="How many papers to request, from 10 to 100."
         />
         <input
           class="number"
@@ -47,7 +43,7 @@
           min="10"
           max="100"
           aria-label="Papers per page number"
-          [value]="count()"
+          [value]="store.limit()"
           (input)="onCount($event)"
           appTooltip="Type a page size between 10 and 100."
         />
@@ -56,28 +52,92 @@
   </div>
 </section>
 
+<div class="sr-only" aria-live="polite">
+  @if (store.loading()) {
+    Searching CORE.
+  } @else if (store.searched()) {
+    {{ store.totalHits() }} matching works.
+  }
+</div>
+
+@if (store.notice(); as notice) {
+  <div class="banner" role="status">
+    <span class="pill pill-sample">Sample data</span>
+    <p>
+      <strong>{{ notice.title }}</strong>
+      <span class="muted">{{ notice.message }}</span>
+    </p>
+  </div>
+}
+
 <section class="grid-main" aria-label="Results and charts">
-  <article class="glass panel empty">
-    <p class="kicker">Results</p>
-    @if (submitted()) {
-      <h3>Ready for “{{ submitted() }}”</h3>
-      <p class="muted">
-        Page size is {{ count() }}. The CORE client is the next layer — this shell already holds
-        the query, the count, and the empty states.
-      </p>
-    } @else {
-      <h3>The index is quiet.</h3>
-      <p class="muted">
-        Enter a query to explore papers. Try a phrase, a field like title:, or a grouped boolean
-        expression.
-      </p>
-    }
+  <article class="glass panel">
+    <div class="stack">
+      <div>
+        <p class="kicker">Results</p>
+        @if (store.source() === 'core') {
+          <span class="pill pill-live">Live CORE</span>
+        } @else if (store.source() === 'sample') {
+          <span class="pill pill-sample">Sample data</span>
+        }
+      </div>
+
+      @if (store.loading()) {
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      } @else if (!store.searched()) {
+        <div class="empty">
+          <h3>The index is quiet.</h3>
+          <p class="muted">
+            Enter a query to load papers. Charts stay blank until the first search. Try
+            <span class="pill">drone AND delivery</span>
+          </p>
+        </div>
+      } @else if (store.papers().length === 0) {
+        <div class="empty">
+          <h3>No papers for this query.</h3>
+          <p class="muted">Try a broader term, or check the spelling of a field filter such as title:.</p>
+        </div>
+      } @else {
+        <p class="muted">{{ store.totalHits() }} matches · showing {{ store.papers().length }} on this page.</p>
+        <div class="paper-list">
+          @for (paper of store.papers(); track paper.id) {
+            <article class="glass panel paper-row">
+              @if (store.source() === 'sample') {
+                <span class="pill pill-sample">Sample data</span>
+              }
+              <h3>{{ paper.title }}</h3>
+              <p class="muted">
+                {{ paper.authors.join(', ') || 'Unknown authors' }}
+                @if (paper.year) {
+                  · {{ paper.year }}
+                }
+                @if (paper.publisher) {
+                  · {{ paper.publisher }}
+                }
+              </p>
+            </article>
+          }
+        </div>
+      }
+    </div>
   </article>
 
   <aside class="glass panel" aria-label="Charts">
     <p class="kicker">Corpus</p>
     <h3 class="h-display">Charts wait for a query</h3>
     <p class="muted">Year, publisher, language, and topic views appear after a search.</p>
-    <div class="chart-frame">No query yet</div>
+    <div class="chart-frame">
+      @if (!store.searched()) {
+        No query yet
+      } @else if (store.aggregateSource() === 'core') {
+        Aggregation is ready from CORE
+      } @else if (store.aggregateSource() === 'sample') {
+        Sample totals are ready
+      } @else {
+        Totals use the loaded page
+      }
+    </div>
   </aside>
 </section>

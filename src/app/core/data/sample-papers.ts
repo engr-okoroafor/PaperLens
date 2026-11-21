@@ -1,0 +1,281 @@
+import { Paper } from '../models/paper';
+
+/** Original sample records so the UI still demos when CORE is down. */
+export const SAMPLE_PAPERS: readonly Paper[] = [
+  {
+    id: 'sample-1',
+    title: 'Routing a drone fleet for rooftop package delivery',
+    authors: ['Mina Cho', 'Jonas Keller'],
+    year: 2023,
+    publisher: 'IEEE',
+    journal: 'IEEE Transactions on Intelligent Transportation',
+    abstract:
+      'A synthetic sample abstract. The study plans rooftop handoffs for a small drone fleet and compares package routes that avoid school zones.',
+    doi: '10.1109/sample.2023.001',
+    downloadUrl: 'https://example.com/samples/drone-package.pdf',
+    language: 'English',
+    documentType: 'research article',
+    citationCount: 42,
+    hasFullText: true,
+    fieldOfStudy: 'Computer science',
+  },
+  {
+    id: 'sample-2',
+    title: 'Urban drone delivery under changing wind windows',
+    authors: ['Elena Voss'],
+    year: 2021,
+    publisher: 'Elsevier',
+    journal: 'Transportation Research Procedia',
+    abstract:
+      'Sample text about delivery corridors. Wind windows decide whether a drone launches with a single package or waits for a paired drop.',
+    doi: '10.1016/sample.2021.002',
+    downloadUrl: null,
+    language: 'English',
+    documentType: 'conference paper',
+    citationCount: 18,
+    hasFullText: false,
+    fieldOfStudy: 'Engineering',
+  },
+  {
+    id: 'sample-3',
+    title: 'Last-mile delivery robots and the curbside handoff',
+    authors: ['Priya Nandakumar', 'Jonas Keller'],
+    year: 2019,
+    publisher: 'Springer Nature',
+    journal: 'Urban Systems Review',
+    abstract:
+      'Sample review of sidewalk robots. It covers package lockers, not aerial drones, and the time a courier spends at the curb.',
+    doi: '10.1007/sample.2019.003',
+    downloadUrl: 'https://example.com/samples/last-mile.pdf',
+    language: 'English',
+    documentType: 'review',
+    citationCount: 27,
+    hasFullText: true,
+    fieldOfStudy: 'Engineering',
+  },
+  {
+    id: 'sample-4',
+    title: 'Medical drone logistics for island clinics',
+    authors: ['Sofia Almeida'],
+    year: 2024,
+    publisher: 'PLOS',
+    journal: 'PLOS Digital Health',
+    abstract:
+      'Sample abstract on clinic resupply. Drones carry temperature-sensitive packages between an island hospital and two delivery sheds.',
+    doi: '10.1371/sample.2024.004',
+    downloadUrl: 'https://example.com/samples/medical-drone.pdf',
+    language: 'English',
+    documentType: 'research article',
+    citationCount: 11,
+    hasFullText: true,
+    fieldOfStudy: 'Medicine',
+  },
+  {
+    id: 'sample-5',
+    title: 'Inspection drones that never carry a payload',
+    authors: ['Lars Olsen'],
+    year: 2018,
+    publisher: 'ACM',
+    journal: 'ACM Symposium on Field Robotics',
+    abstract:
+      'Sample note on inspection flights. These drones survey bridges and do not handle a package or a delivery manifest.',
+    doi: null,
+    downloadUrl: null,
+    language: 'English',
+    documentType: 'conference paper',
+    citationCount: 9,
+    hasFullText: false,
+    fieldOfStudy: 'Computer science',
+  },
+  {
+    id: 'sample-6',
+    title: 'Warehouse package sortation without aerial vehicles',
+    authors: ['Hannah Berg'],
+    year: 2022,
+    publisher: 'Wiley',
+    journal: 'Journal of Operations',
+    abstract:
+      'Sample abstract about conveyor sortation. Packages move on belts inside a warehouse. No drone is involved.',
+    doi: '10.1002/sample.2022.006',
+    downloadUrl: null,
+    language: 'German',
+    documentType: 'research article',
+    citationCount: 6,
+    hasFullText: false,
+    fieldOfStudy: 'Engineering',
+  },
+  {
+    id: 'sample-7',
+    title: 'Early signals of climate tipping in coastal wetlands',
+    authors: ['Amelia Rossi', 'Noah Abebe'],
+    year: 2020,
+    publisher: 'Springer Nature',
+    journal: 'Nature Climate',
+    abstract:
+      'Sample abstract. Wetland cores suggest a climate threshold, with biodiversity loss following repeated salt intrusion.',
+    doi: '10.1038/sample.2020.007',
+    downloadUrl: 'https://example.com/samples/climate.pdf',
+    language: 'English',
+    documentType: 'research article',
+    citationCount: 120,
+    hasFullText: true,
+    fieldOfStudy: 'Environmental science',
+  },
+  {
+    id: 'sample-8',
+    title: 'Biodiversity corridors across fragmented farmland',
+    authors: ['Ines Duarte'],
+    year: 2016,
+    publisher: 'Wiley',
+    journal: 'Conservation Letters',
+    abstract:
+      'Sample text on hedgerow corridors. The work tracks plant biodiversity between farms and does not discuss climate models.',
+    doi: '10.1111/sample.2016.008',
+    downloadUrl: null,
+    language: 'Spanish',
+    documentType: 'research article',
+    citationCount: 33,
+    hasFullText: false,
+    fieldOfStudy: 'Environmental science',
+  },
+  {
+    id: 'sample-9',
+    title: 'Machine learning for seasonal climate windows',
+    authors: ['Noah Abebe', 'Mina Cho'],
+    year: 2022,
+    publisher: 'Elsevier',
+    journal: 'Environmental Modelling',
+    abstract:
+      'Sample abstract. A machine learning model ranks seasonal climate windows for crop planning using open weather archives.',
+    doi: '10.1016/sample.2022.009',
+    downloadUrl: 'https://example.com/samples/ml-climate.pdf',
+    language: 'English',
+    documentType: 'research article',
+    citationCount: 54,
+    hasFullText: true,
+    fieldOfStudy: 'Computer science',
+  },
+  {
+    id: 'sample-10',
+    title: 'Machine learning notes from a 2014 reading group',
+    authors: ['Jonas Keller'],
+    year: 2014,
+    publisher: 'arXiv',
+    journal: null,
+    abstract:
+      'Sample preprint. The notes collect machine learning exercises from a 2014 reading group and predate the later climate models.',
+    doi: null,
+    downloadUrl: 'https://example.com/samples/ml-2014.pdf',
+    language: 'English',
+    documentType: 'preprint',
+    citationCount: 3,
+    hasFullText: true,
+    fieldOfStudy: 'Computer science',
+  },
+  {
+    id: 'sample-11',
+    title: 'Sparse models for satellite night lights',
+    authors: ['Elena Voss', 'Lars Olsen'],
+    year: 2025,
+    publisher: 'IEEE',
+    journal: 'IEEE Geoscience Letters',
+    abstract:
+      'Sample abstract about night-light imagery. The method is statistical rather than a general machine learning survey.',
+    doi: '10.1109/sample.2025.011',
+    downloadUrl: null,
+    language: 'English',
+    documentType: 'research article',
+    citationCount: null,
+    hasFullText: false,
+    fieldOfStudy: 'Earth science',
+  },
+  {
+    id: 'sample-12',
+    title: 'A thesis on bilingual science summaries',
+    authors: ['Camille Bernard'],
+    year: 2017,
+    publisher: 'Université de Lyon',
+    journal: null,
+    abstract:
+      'Sample thesis abstract. It studies how French and English abstracts describe the same laboratory result.',
+    doi: '10.5281/sample.2017.012',
+    downloadUrl: 'https://example.com/samples/thesis.pdf',
+    language: 'French',
+    documentType: 'thesis',
+    citationCount: 1,
+    hasFullText: true,
+    fieldOfStudy: 'Linguistics',
+  },
+  {
+    id: 'sample-13',
+    title: 'Publisher workflows for open climate data',
+    authors: ['Amelia Rossi'],
+    year: 2024,
+    publisher: 'PLOS',
+    journal: 'Data Science Journal',
+    abstract:
+      'Sample abstract on editorial workflow. Climate datasets move through a publisher checklist before the paper is released.',
+    doi: '10.5334/sample.2024.013',
+    downloadUrl: null,
+    language: 'English',
+    documentType: 'review',
+    citationCount: 7,
+    hasFullText: false,
+    fieldOfStudy: 'Environmental science',
+  },
+  {
+    id: 'sample-14',
+    title: 'Field notes on Andean potato biodiversity',
+    authors: ['Mateo Quispe'],
+    year: 2015,
+    publisher: 'Springer Nature',
+    journal: 'Genetic Resources',
+    abstract:
+      'Sample field notes. Farmers name potato varieties along a valley, adding a biodiversity record without a climate model.',
+    doi: null,
+    downloadUrl: null,
+    language: 'Spanish',
+    documentType: 'research article',
+    citationCount: 14,
+    hasFullText: false,
+    fieldOfStudy: 'Agricultural science',
+  },
+];
+
+const SKIPPED = new Set([
+  'and',
+  'or',
+  'not',
+  'title',
+  'authors',
+  'author',
+  'abstract',
+  'publisher',
+  'language',
+  'documenttype',
+  'doi',
+  'yearpublished',
+  '_exists_',
+]);
+
+/** Best-effort match used before the boolean parser is applied. */
+export function looseMatch(paper: Paper, query: string): boolean {
+  const terms = query
+    .toLowerCase()
+    .replace(/[()"<>:=]/g, ' ')
+    .split(/\s+/)
+    .filter((term) => term.length > 1 && !SKIPPED.has(term) && !/^\d+$/.test(term));
+  if (terms.length === 0) {
+    return true;
+  }
+  const haystack = [paper.title, paper.abstract, paper.authors.join(' '), paper.publisher, paper.journal]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  const hasOr = /\bor\b/i.test(query) && !/\band\b/i.test(query);
+  return hasOr ? terms.some((term) => haystack.includes(term)) : terms.every((term) => haystack.includes(term));
+}
+
+export function filterSample(query: string): Paper[] {
+  return SAMPLE_PAPERS.filter((paper) => looseMatch(paper, query));
+}

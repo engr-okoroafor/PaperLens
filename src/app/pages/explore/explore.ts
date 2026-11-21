@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
+import { SearchStore } from '../../core/services/search-store.service';
 import { TooltipDirective } from '../../ui/tooltip/tooltip.directive';
 
 @Component({
@@ -8,23 +9,18 @@ import { TooltipDirective } from '../../ui/tooltip/tooltip.directive';
   templateUrl: './explore.html',
 })
 export class Explore {
-  readonly draft = signal('');
-  readonly count = signal(20);
-  readonly submitted = signal('');
+  readonly store = inject(SearchStore);
 
   onDraft(event: Event): void {
-    this.draft.set((event.target as HTMLInputElement).value);
+    this.store.setDraft((event.target as HTMLInputElement).value);
   }
 
   onCount(event: Event): void {
-    const next = Number((event.target as HTMLInputElement).value);
-    if (Number.isFinite(next)) {
-      this.count.set(Math.min(100, Math.max(10, Math.round(next))));
-    }
+    this.store.setLimit(Number((event.target as HTMLInputElement).value));
   }
 
   submit(event: Event): void {
     event.preventDefault();
-    this.submitted.set(this.draft().trim());
+    this.store.commitNow();
   }
 }
