@@ -1,6 +1,7 @@
 import { Component, HostListener, inject } from '@angular/core';
 
 import { TourService } from '../../core/services/tour.service';
+import { LanguageService } from '../../core/services/language.service';
 
 @Component({
   selector: 'app-help-dialog',
@@ -8,6 +9,7 @@ import { TourService } from '../../core/services/tour.service';
 })
 export class HelpDialog {
   readonly tour = inject(TourService);
+  readonly lang = inject(LanguageService);
 
   @HostListener('document:keydown', ['$event'])
   onKey(event: KeyboardEvent): void {

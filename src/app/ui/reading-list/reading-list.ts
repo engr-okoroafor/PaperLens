@@ -2,6 +2,7 @@ import { Component, HostListener, inject } from '@angular/core';
 
 import { LibraryService } from '../../core/services/library.service';
 import { SearchStore } from '../../core/services/search-store.service';
+import { LanguageService } from '../../core/services/language.service';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
@@ -12,6 +13,7 @@ import { TooltipDirective } from '../tooltip/tooltip.directive';
 export class ReadingList {
   readonly library = inject(LibraryService);
   readonly store = inject(SearchStore);
+  readonly lang = inject(LanguageService);
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
